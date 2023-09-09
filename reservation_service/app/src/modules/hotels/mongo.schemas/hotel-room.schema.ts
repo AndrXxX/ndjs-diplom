@@ -26,4 +26,4 @@ export class HotelRoom implements iHotelRoom {
   isEnabled: boolean;
 }
 
-export const HotelSchema = SchemaFactory.createForClass(HotelRoom);
+export const HotelRoomSchema = SchemaFactory.createForClass(HotelRoom);

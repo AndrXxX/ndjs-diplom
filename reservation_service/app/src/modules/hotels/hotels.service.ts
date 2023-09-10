@@ -20,7 +20,7 @@ export class HotelsService implements IHotelsService {
             return model;
         } catch (e) {
             console.error(e);
-            throw new Error("Ошибка при отеля: указаны неверные данные")
+            throw new Error("Ошибка при создании отеля: указаны неверные данные")
         }
     }
 

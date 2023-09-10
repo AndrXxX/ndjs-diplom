@@ -3,7 +3,7 @@ import { Reservation } from "../mongo.schemas/reservation.schema";
 import { ReservationSearchOptions } from "./reservation-search-options.interface";
 import { ReservationDto } from "./reservation.dto.interface";
 
-export interface IReservation {
+export interface IReservationService {
   addReservation(data: ReservationDto): Promise<Reservation>;
   removeReservation(id: ID): Promise<void>;
   getReservations(

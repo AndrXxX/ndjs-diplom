@@ -3,8 +3,8 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { GenerateHashService } from "src/modules/auth/generate-hash.service";
 import { ID } from "src/types/ID";
+import { CreateUserDto } from "./dto/user-create.dto";
 import { SearchUserParams } from "./interfaces/search-user-params.interface";
-import { CreateUserDto } from "./interfaces/user-create.interface";
 import { IUserService } from "./interfaces/user-service.interface";
 import { User, UserDocument } from "./mongo.schemas/user.schema";
 

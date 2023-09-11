@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, ObjectId } from 'mongoose';
-import { iMessage } from "src/interfaces/message.interface";
 import { iSupportRequest } from "src/interfaces/support-request.interface";
+import { MessageDocument } from "./message.schema";
 import { User } from "src/modules/users/mongo.schemas/user.schema";
 
 export type SupportRequestDocument = HydratedDocument<SupportRequest>;
@@ -15,7 +15,7 @@ export class SupportRequest implements iSupportRequest {
   createdAt: Date;
 
   @Prop( { required: false, default: [] })
-  messages: iMessage[];
+  messages: MessageDocument[];
 
   @Prop( { required: false })
   isActive: boolean;

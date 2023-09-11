@@ -18,6 +18,8 @@ export class SupportRequestClientService implements ISupportRequestClientService
     public async createSupportRequest(data: CreateSupportRequestDto): Promise<SupportRequest> {
         const model = new this.SupportRequestModel(data);
         model.createdAt = new Date();
+        model.isActive = true;
+        // model.messages.push() // TODO add message
         await model.save();
         return model;
     }

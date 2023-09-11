@@ -4,7 +4,7 @@ import { Model } from "mongoose";
 import { ID } from "src/types/ID";
 import { ReservationSearchOptions } from "./interfaces/reservation-search-options.interface";
 import { IReservationService } from "./interfaces/reservation-service.interface";
-import { ReservationDto } from "./interfaces/reservation.dto.interface";
+import { ReservationDto } from "./interfaces/reservation-dto.interface";
 import { Reservation, ReservationDocument } from "./mongo.schemas/reservation.schema";
 
 @Injectable()

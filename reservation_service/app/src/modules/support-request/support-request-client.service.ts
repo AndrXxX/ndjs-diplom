@@ -33,6 +33,8 @@ export class SupportRequestClientService implements ISupportRequestClientService
     }
 
     public async getUnreadCount(supportRequest: ID): Promise<Message[]> {
+        // TODO: должен возвращать количество сообщений, которые были отправлены любым сотрудником поддержки и не отмечены прочитанным.
+        // TODO: Возможно проверять роль
         return (await this.findById(supportRequest))
           ?.messages
           .filter(message => !message.readAt) || [];

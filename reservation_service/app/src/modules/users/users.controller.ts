@@ -1,6 +1,6 @@
 import { Body, Controller, Post, Request, UseGuards } from '@nestjs/common';
 import { DtoValidationPipe } from "src/validators/dto.validation.pipe";
-import { AuthService } from "../auth/auth.service";
+import { AuthenticatedGuard } from "../auth/guards/authenticated.guard";
 import { LocalAuthGuard } from "../auth/guards/local.auth.guard";
 import { CreateUserDto } from "./dto/user-create.dto";
 import { SigninUserDto } from "./interfaces/user-signin.interface";
@@ -10,7 +10,6 @@ import { UsersService } from "./users.service";
 export class UsersController {
   constructor(
     private usersService: UsersService,
-    private authService: AuthService,
   ) {}
 
   @Post("/client/register")
@@ -33,5 +32,11 @@ export class UsersController {
       name: req.user.name,
       contactPhone: req.user.contactPhone,
     }
+  }
+
+  @UseGuards(AuthenticatedGuard)
+  @Post('auth/logout')
+  logout(@Request() req: any): any {
+    req.session.destroy();
   }
 }

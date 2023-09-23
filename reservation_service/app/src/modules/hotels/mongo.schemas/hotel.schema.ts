@@ -6,6 +6,8 @@ export type HotelDocument = HydratedDocument<Hotel>;
 
 @Schema()
 export class Hotel implements iHotel {
+  id: string;
+
   @Prop( { required: [true, 'Не указано название'] })
   title: string;
 

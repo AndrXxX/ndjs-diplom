@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 import { ID } from "src/types/ID";
 import { UsersService } from '../users/users.service';
 import { GenerateHashService } from "./generate-hash.service";
@@ -8,7 +7,6 @@ import { GenerateHashService } from "./generate-hash.service";
 export class AuthService {
   constructor(
     private usersService: UsersService,
-    private jwtService: JwtService,
     private hashService: GenerateHashService,
   ) {}
 
@@ -27,9 +25,5 @@ export class AuthService {
       return result;
     }
     return null;
-  }
-
-  createToken(payload: any) {
-    return this.jwtService.sign(payload);
   }
 }

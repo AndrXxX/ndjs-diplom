@@ -1,8 +1,8 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
-import { IHotelsRoomService } from "src/modules/hotels/interfaces/hotels-room-service.interface";
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { CreateHotelDto } from "./dto/create-hotel.dto";
 import { FormatHotelRoomService } from "./format-hotel-room.service";
 import { FormatHotelService } from "./format-hotel.service";
+import { IHotelsRoomService } from "./interfaces/hotels-room-service.interface";
 import { IHotelsService } from "./interfaces/hotels-service.interface";
 import { SearchHotelParams } from "./interfaces/search-hotel-params.interface";
 import { SearchRoomsParams } from "./interfaces/search-rooms-params.interface";
@@ -42,5 +42,11 @@ export class HotelsController {
     // TODO: Если пользователь не аутентифицирован или его роль client, то при поиске всегда должен использоваться флаг isEnabled: true.
     const rooms = await this.hotelRoomsService.search(query);
     return rooms.map(room => this.formatHotelRoomService.format(room));
+  }
+
+  @Get('/common/hotel-rooms/:id')
+  async hotelRoom(@Param('id') id: string) {
+    const room = await this.hotelRoomsService.findById(id);
+    return room ? this.formatHotelRoomService.format(room) : {};
   }
 }

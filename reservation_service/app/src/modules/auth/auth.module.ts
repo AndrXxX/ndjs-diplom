@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
-import { GenerateHashService } from "src/modules/auth/generate-hash.service";
+import { AuthService } from "./auth.service";
+import { GenerateHashService } from "./generate-hash.service";
 
 @Module({
   imports: [],
   providers: [GenerateHashService],
-  exports: [GenerateHashService],
+  exports: [AuthService, GenerateHashService],
 })
 export class AuthModule {}

@@ -9,7 +9,7 @@ export class FormatHotelRoomService {
       private formatHotelService: FormatHotelService,
     ) {}
 
-    public async format(room: HotelRoom) {
+    public format(room: HotelRoom) {
         const { id, description, images } = room;
         return { id, description, images, hotel: this.formatHotelService.format(room.hotel as any) } //TODO
     }

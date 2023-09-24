@@ -8,4 +8,9 @@ export class UsersFormatter {
         const { id, email, name, contactPhone } = user;
         return { id, email, name, contactPhone }
     }
+
+    public async formatForAdmin(user: User) {
+        const { id, email, name, contactPhone, role } = user;
+        return { id, email, name, contactPhone, role }
+    }
 }

@@ -15,7 +15,7 @@ import { Hotel, HotelSchema } from "./mongo.schemas/hotel.schema";
       { name: HotelRoom.name, schema: HotelRoomSchema },
     ]),
   ],
-  providers: [HotelsService, HotelsRoomService],
+  providers: [HotelsService, HotelsRoomService, FormatHotelService, FormatHotelRoomService],
   exports: [HotelsService, HotelsRoomService, FormatHotelService, FormatHotelRoomService],
   controllers: [HotelsController],
 })

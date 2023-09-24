@@ -23,7 +23,7 @@ export class UsersService implements IUserService {
             return user;
         } catch (e) {
             console.error(e);
-            throw new Error("Ошибка при создании пользователя: указаны неверные данные или такой пользователь уже есть")
+            throw new BadRequestException("Ошибка при создании пользователя: указаны неверные данные или такой пользователь уже есть");
         }
     }
 

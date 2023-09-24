@@ -2,16 +2,16 @@ import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { CreateHotelDto } from "./dto/create-hotel.dto";
 import { FormatHotelRoomService } from "./format-hotel-room.service";
 import { FormatHotelService } from "./format-hotel.service";
-import { IHotelsRoomService } from "./interfaces/hotels-room-service.interface";
-import { IHotelsService } from "./interfaces/hotels-service.interface";
+import { HotelsRoomService } from "./hotels-room.service";
+import { HotelsService } from "./hotels.service";
 import { SearchHotelParams } from "./interfaces/search-hotel-params.interface";
 import { SearchRoomsParams } from "./interfaces/search-rooms-params.interface";
 
 @Controller('api')
 export class HotelsController {
   constructor(
-    private hotelsService: IHotelsService,
-    private hotelRoomsService: IHotelsRoomService,
+    private hotelsService: HotelsService,
+    private hotelRoomsService: HotelsRoomService,
     private formatHotelService: FormatHotelService,
     private formatHotelRoomService: FormatHotelRoomService,
   ) {}

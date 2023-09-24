@@ -2,6 +2,7 @@ import { Body, Controller, Post, Request, UseGuards } from '@nestjs/common';
 import { DtoValidationPipe } from "src/validators/dto.validation.pipe";
 import { AuthenticatedGuard } from "../auth/guards/authenticated.guard";
 import { LocalAuthGuard } from "../auth/guards/local.auth.guard";
+import { NotAuthenticatedGuard } from "../auth/guards/not-authenticated.guard";
 import { CreateUserDto } from "./dto/user-create.dto";
 import { SigninUserDto } from "./interfaces/user-signin.interface";
 import { UsersFormatter } from "./users.formatter";
@@ -14,6 +15,7 @@ export class UsersController {
     private usersFormatter: UsersFormatter,
   ) {}
 
+  @UseGuards(NotAuthenticatedGuard)
   @Post("/client/register")
   async clientRegister(@Body(DtoValidationPipe) createUserDto: CreateUserDto) {
     createUserDto.role = 'client';

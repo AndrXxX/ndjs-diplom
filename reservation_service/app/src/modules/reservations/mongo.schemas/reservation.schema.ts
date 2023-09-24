@@ -9,13 +9,13 @@ export type ReservationDocument = HydratedDocument<Reservation>;
 
 @Schema()
 export class Reservation implements iReservation {
-  @Prop( { required: [true, 'Не указан пользователь'], ref: User })
+  @Prop( { required: [true, 'Не указан пользователь'], ref: () => User, type: User })
   userId: ObjectId;
 
-  @Prop( { required: [true, 'Не указан отель'], ref: Hotel })
+  @Prop( { required: [true, 'Не указан отель'], ref: () => Hotel, type: Hotel })
   hotelId: ObjectId;
 
-  @Prop( { required: [true, 'Не указана комната'], ref: HotelRoom })
+  @Prop( { required: [true, 'Не указана комната'], ref: () => HotelRoom, type: HotelRoom })
   roomId: ObjectId;
 
   @Prop( { required: [true, 'Не указана дата начала'] })

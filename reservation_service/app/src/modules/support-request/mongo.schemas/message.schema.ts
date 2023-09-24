@@ -7,7 +7,7 @@ export type MessageDocument = HydratedDocument<Message>;
 
 @Schema()
 export class Message implements iMessage {
-  @Prop( { required: [true, 'Не указан автор'], ref: User })
+  @Prop( { required: [true, 'Не указан автор'], ref: () => User, type: User })
   author: ObjectId;
 
   @Prop( { required: [true, 'Не указана дата отправки'] })

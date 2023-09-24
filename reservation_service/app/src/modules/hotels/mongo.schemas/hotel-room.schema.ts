@@ -9,7 +9,7 @@ export type HotelRoomDocument = HydratedDocument<HotelRoom>;
 export class HotelRoom implements iHotelRoom {
   id: string;
 
-  @Prop( { required: [true, 'Не указан отель'], ref: Hotel })
+  @Prop( { required: [true, 'Не указан отель'], ref: () => Hotel, type: Hotel })
   hotel: ObjectId;
 
   @Prop( { required: false })

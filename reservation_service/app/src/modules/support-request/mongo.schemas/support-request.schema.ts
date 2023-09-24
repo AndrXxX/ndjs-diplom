@@ -8,7 +8,7 @@ export type SupportRequestDocument = HydratedDocument<SupportRequest>;
 
 @Schema()
 export class SupportRequest implements iSupportRequest {
-  @Prop( { required: [true, 'Не указан пользователь'], ref: User })
+  @Prop( { required: [true, 'Не указан пользователь'], ref: () => User, type: User })
   user: ObjectId;
 
   @Prop( { required: [true, 'Не указана дата создания'] })

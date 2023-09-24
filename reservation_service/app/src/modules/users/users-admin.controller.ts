@@ -15,8 +15,7 @@ export class UsersAdminController {
   ) {}
 
   @Roles('admin')
-  @UseGuards(AuthenticatedGuard)
-  @UseGuards(RolesGuard)
+  @UseGuards(AuthenticatedGuard, RolesGuard)
   @Post("/users")
   async users(@Body(DtoValidationPipe) createUserDto: CreateUserDto) {
     return this.usersFormatter.formatForAdmin(await this.usersService.create(createUserDto));

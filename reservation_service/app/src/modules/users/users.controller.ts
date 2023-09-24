@@ -15,7 +15,7 @@ export class UsersController {
   @Post("/client/register")
   async clientRegister(@Body(DtoValidationPipe) createUserDto: CreateUserDto) {
     createUserDto.role = 'client';
-    await this.usersService.create(createUserDto);
+    return await this.usersService.create(createUserDto);
   }
 
   @UseGuards(LocalAuthGuard)

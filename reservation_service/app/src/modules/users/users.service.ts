@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { GenerateHashService } from "src/modules/auth/generate-hash.service";
@@ -15,8 +15,8 @@ export class UsersService implements IUserService {
       private hashService: GenerateHashService,
     ) {}
 
-    public async create(data: Partial<CreateUserDto>): Promise<UserDocument> {
-        data.passwordHash = this.hashService.generate(data.passwordHash);
+    public async create(data: Partial<CreateUserDto> & Partial<User>): Promise<UserDocument> {
+        data.passwordHash = this.hashService.generate(data.password);
         const user = new this.UserModel(data);
         try {
             await user.save();

@@ -1,13 +1,11 @@
-import { IsDefined, IsEmail, IsIn, IsString, Length } from "class-validator";
-import { UserRoleEnum } from "src/enums/user-role.enum";
-import { User } from "src/modules/users/mongo.schemas/user.schema";
+import { IsDefined, IsEmail, IsEmpty, IsString, Length } from "class-validator";
 
-export class CreateUserDto extends User {
+export class CreateUserDto {
   @IsDefined() @IsString() @IsEmail()
   email: string;
 
   @IsDefined() @IsString() @Length(10)
-  passwordHash: string;
+  password: string;
 
   @IsDefined() @IsString() @Length(3)
   name: string;
@@ -15,6 +13,6 @@ export class CreateUserDto extends User {
   @IsString()
   contactPhone: string;
 
-  @IsString() @IsIn([UserRoleEnum.client, UserRoleEnum.admin, UserRoleEnum.manager])
+  @IsEmpty()
   role: string;
 }

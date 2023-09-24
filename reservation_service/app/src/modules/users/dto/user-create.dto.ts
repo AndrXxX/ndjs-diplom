@@ -1,4 +1,5 @@
-import { IsDefined, IsEmail, IsEmpty, IsString, Length } from "class-validator";
+import { IsDefined, IsEmail, IsIn, IsString, Length } from "class-validator";
+import { UserRoleEnum } from "src/enums/user-role.enum";
 
 export class CreateUserDto {
   @IsDefined() @IsString() @IsEmail()
@@ -13,6 +14,6 @@ export class CreateUserDto {
   @IsString()
   contactPhone: string;
 
-  @IsEmpty()
+  @IsString() @IsIn([UserRoleEnum.client, UserRoleEnum.admin, UserRoleEnum.manager])
   role: string;
 }

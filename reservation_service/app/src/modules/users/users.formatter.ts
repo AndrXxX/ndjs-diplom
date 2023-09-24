@@ -5,7 +5,7 @@ import { User } from "./mongo.schemas/user.schema";
 export class UsersFormatter {
 
     public async format(user: User) {
-        const { id, email, name } = user;
-        return { id, email, name }
+        const { id, email, name, contactPhone } = user;
+        return { id, email, name, contactPhone }
     }
 }

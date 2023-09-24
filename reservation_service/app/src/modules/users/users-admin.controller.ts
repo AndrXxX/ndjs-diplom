@@ -7,6 +7,7 @@ import { CreateUserDto } from "../users/dto/user-create.dto";
 import { UsersFormatter } from "../users/users.formatter";
 import { UsersService } from "../users/users.service";
 
+@UseGuards(AuthenticatedGuard, RolesGuard)
 @Controller('/api/admin')
 export class UsersAdminController {
   constructor(
@@ -15,7 +16,6 @@ export class UsersAdminController {
   ) {}
 
   @Roles('admin')
-  @UseGuards(AuthenticatedGuard, RolesGuard)
   @Post("/users")
   async users(@Body(DtoValidationPipe) createUserDto: CreateUserDto) {
     return this.usersFormatter.formatForAdmin(await this.usersService.create(createUserDto));

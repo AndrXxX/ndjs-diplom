@@ -1,6 +1,8 @@
 import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { DtoValidationPipe } from "src/validators/dto.validation.pipe";
+import { Roles } from "../auth/decorators/roles.decorator";
 import { AuthenticatedGuard } from "../auth/guards/authenticated.guard";
+import { RolesGuard } from "../auth/guards/roles.guard";
 import { CreateUserDto } from "../users/dto/user-create.dto";
 import { UsersFormatter } from "../users/users.formatter";
 import { UsersService } from "../users/users.service";
@@ -12,11 +14,11 @@ export class UsersAdminController {
     private usersFormatter: UsersFormatter,
   ) {}
 
+  @Roles('admin')
   @UseGuards(AuthenticatedGuard)
+  @UseGuards(RolesGuard)
   @Post("/users")
   async users(@Body(DtoValidationPipe) createUserDto: CreateUserDto) {
-    // TODO: Доступно только пользователям с ролью admin.
-    // TODO: 403 - если роль пользователя не admin.
     return this.usersFormatter.formatForAdmin(await this.usersService.create(createUserDto));
   }
 }

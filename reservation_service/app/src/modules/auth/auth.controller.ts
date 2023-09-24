@@ -10,8 +10,7 @@ export class AuthController {
     private usersFormatter: UsersFormatter,
   ) {}
 
-  @UseGuards(NotAuthenticatedGuard)
-  @UseGuards(LocalAuthGuard)
+  @UseGuards(NotAuthenticatedGuard, LocalAuthGuard)
   @Post("/login")
   async authLogin(
     @Request() req: any,

@@ -29,14 +29,7 @@ export class UsersController {
     @Body(DtoValidationPipe) signinUserDto: SigninUserDto,
     @Request() req: any,
   ) {
-    // TODO: Доступно только не аутентифицированным пользователям.
-    // TODO: 401 - если пользователя с указанным email не существует или пароль неверный.
-    // TODO: Стартует сессию пользователя и выставляет Cookies.
-    return {
-      email: req.user.email,
-      name: req.user.name,
-      contactPhone: req.user.contactPhone,
-    }
+    return this.usersFormatter.format(req.user);
   }
 
   @UseGuards(AuthenticatedGuard)

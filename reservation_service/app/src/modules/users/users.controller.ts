@@ -4,18 +4,20 @@ import { AuthenticatedGuard } from "../auth/guards/authenticated.guard";
 import { LocalAuthGuard } from "../auth/guards/local.auth.guard";
 import { CreateUserDto } from "./dto/user-create.dto";
 import { SigninUserDto } from "./interfaces/user-signin.interface";
+import { UsersFormatter } from "./users.formatter";
 import { UsersService } from "./users.service";
 
 @Controller('api')
 export class UsersController {
   constructor(
     private usersService: UsersService,
+    private usersFormatter: UsersFormatter,
   ) {}
 
   @Post("/client/register")
   async clientRegister(@Body(DtoValidationPipe) createUserDto: CreateUserDto) {
     createUserDto.role = 'client';
-    return await this.usersService.create(createUserDto);
+    return this.usersFormatter.format(await this.usersService.create(createUserDto));
   }
 
   @UseGuards(LocalAuthGuard)

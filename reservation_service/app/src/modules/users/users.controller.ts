@@ -22,6 +22,7 @@ export class UsersController {
     return this.usersFormatter.format(await this.usersService.create(createUserDto));
   }
 
+  @UseGuards(NotAuthenticatedGuard)
   @UseGuards(LocalAuthGuard)
   @Post("/auth/login")
   async authLogin(

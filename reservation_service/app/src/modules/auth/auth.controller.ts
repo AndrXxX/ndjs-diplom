@@ -3,14 +3,12 @@ import { DtoValidationPipe } from "src/validators/dto.validation.pipe";
 import { AuthenticatedGuard } from "../auth/guards/authenticated.guard";
 import { LocalAuthGuard } from "../auth/guards/local.auth.guard";
 import { NotAuthenticatedGuard } from "../auth/guards/not-authenticated.guard";
-import { SigninUserDto } from "./interfaces/user-signin.interface";
-import { UsersFormatter } from "./users.formatter";
-import { UsersService } from "./users.service";
+import { SigninUserDto } from "../users/interfaces/user-signin.interface";
+import { UsersFormatter } from "../users/users.formatter";
 
 @Controller('/api/auth')
-export class UsersAuthController {
+export class AuthController {
   constructor(
-    private usersService: UsersService,
     private usersFormatter: UsersFormatter,
   ) {}
 

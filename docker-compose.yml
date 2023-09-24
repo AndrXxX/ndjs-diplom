@@ -3,10 +3,8 @@ services:
   mongodb:
     image: mongo
     restart: always
-    ports:
-      - ${MONGODB_PORT:-27018}:27017
     environment:
-      - MONGO_INITDB_DATABASE=${DB_NAME:-library}
+      - MONGO_INITDB_DATABASE=${DB_NAME:-reservation_db}
       - MONGO_INITDB_ROOT_USERNAME=${DB_USERNAME:-root}
       - MONGO_INITDB_ROOT_PASSWORD=${DB_PASSWORD:-password}
     volumes:
@@ -32,7 +30,7 @@ services:
     working_dir: /app
     environment:
       - PORT=80
-      - DB_URL=mongodb://${DB_USERNAME:-root}:${DB_PASSWORD:-password}@mongodb:${MONGODB_PORT:-27018}/${DB_NAME:-reservation_db}
+      - DB_URL=mongodb://${DB_USERNAME:-root}:${DB_PASSWORD:-password}@mongodb:27017/${DB_NAME:-reservation_db}
       - COOKIE_SECRET=${COOKIE_SECRET:-COOKIE_SECRET}
     ports:
       - ${RESERVATION_SERVICE_PORT:-3005}:80

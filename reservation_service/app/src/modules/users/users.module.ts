@@ -2,8 +2,9 @@ import { forwardRef, Module } from '@nestjs/common';
 import { MongooseModule } from "@nestjs/mongoose";
 import { AuthModule } from "../auth/auth.module";
 import { User, UserSchema } from "./mongo.schemas/user.schema";
-import { UsersFormatter } from "src/modules/users/users.formatter";
-import { UsersController } from "./users.controller";
+import { UsersAuthController } from "./users-auth.controller";
+import { UsersClientController } from "./users-client.controller";
+import { UsersFormatter } from "./users.formatter";
 import { UsersService } from './users.service';
 
 @Module({
@@ -15,6 +16,6 @@ import { UsersService } from './users.service';
   ],
   providers: [UsersService, UsersFormatter],
   exports: [UsersService, UsersFormatter],
-  controllers: [UsersController],
+  controllers: [UsersAuthController, UsersClientController],
 })
 export class UsersModule {}

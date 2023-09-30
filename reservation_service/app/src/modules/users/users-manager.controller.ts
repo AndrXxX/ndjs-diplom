@@ -1,4 +1,5 @@
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
+import { UserRoleEnum } from "src/enums/user-role.enum";
 import { Roles } from "../auth/decorators/roles.decorator";
 import { AuthenticatedGuard } from "../auth/guards/authenticated.guard";
 import { RolesGuard } from "../auth/guards/roles.guard";
@@ -14,7 +15,7 @@ export class UsersManagerController {
     private usersFormatter: UsersFormatter,
   ) {}
 
-  @Roles('manager')
+  @Roles(UserRoleEnum.manager)
   @Get("/users")
   async usersList(@Query() query: SearchUserParams) {
     const users = await this.usersService.findAll(query);

@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { Hotel } from "./mongo.schemas/hotel.schema";
 
 @Injectable()
-export class FormatHotelService {
+export class HotelsFormatter {
 
     public format(hotel: Hotel) {
         const { id, title, description } = hotel;

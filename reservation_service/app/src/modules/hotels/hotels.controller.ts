@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { HotelsFormatter } from "src/modules/hotels/hotels.formatter";
 import { CreateHotelDto } from "./dto/create-hotel.dto";
 import { FormatHotelRoomService } from "./format-hotel-room.service";
-import { FormatHotelService } from "./format-hotel.service";
 import { HotelsRoomService } from "./hotels-room.service";
 import { HotelsService } from "./hotels.service";
 import { SearchHotelParams } from "./interfaces/search-hotel-params.interface";
@@ -12,7 +12,7 @@ export class HotelsController {
   constructor(
     private hotelsService: HotelsService,
     private hotelRoomsService: HotelsRoomService,
-    private formatHotelService: FormatHotelService,
+    private hotelsFormatter: HotelsFormatter,
     private formatHotelRoomService: FormatHotelRoomService,
   ) {}
 
@@ -23,7 +23,7 @@ export class HotelsController {
     // Ошибки
     // 401 - если пользователь не аутентифицирован;
     // 403 - если роль пользователя не admin.
-    return this.formatHotelService.format(await this.hotelsService.create(createHotelDto))
+    return this.hotelsFormatter.format(await this.hotelsService.create(createHotelDto))
   }
 
   @Get('/admin/hotels/')
@@ -34,7 +34,7 @@ export class HotelsController {
     // 401 - если пользователь не аутентифицирован;
     // 403 - если роль пользователя не admin.
     const hotels = await this.hotelsService.search(query);
-    return hotels.map(hotel => this.formatHotelService.format(hotel));
+    return hotels.map(hotel => this.hotelsFormatter.format(hotel));
   }
 
   @Get('/common/hotel-rooms/')

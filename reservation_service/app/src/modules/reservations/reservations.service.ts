@@ -28,4 +28,8 @@ export class ReservationsService implements IReservationService {
     async getReservations(filter: ReservationSearchOptions): Promise<ReservationDocument[]> {
         return await this.ReservationModel.find(filter).select('-__v').exec();
     }
+
+    async findById(id: ID): Promise<ReservationDocument | undefined> {
+        return await this.ReservationModel.findById(id).select('-__v').exec();
+    }
 }

@@ -1,8 +1,8 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
+import { CreateSupportRequest } from "./interfaces/create-support-request.interface";
 import { ID } from "src/types/ID";
-import { CreateSupportRequestDto } from "./interfaces/create-support-request-dto.interface";
 import { MarkMessagesAsReadDto } from "./interfaces/mark-messages-as-read-dto.interface";
 import { ISupportRequestClientService } from "./interfaces/support-request-client-service.interface";
 import { Message } from "./mongo.schemas/message.schema";
@@ -17,7 +17,7 @@ export class SupportRequestClientService implements ISupportRequestClientService
       @InjectModel(SupportRequest.name) private SupportRequestModel: Model<SupportRequestDocument>,
     ) {}
 
-    public async createSupportRequest(data: CreateSupportRequestDto): Promise<SupportRequest> {
+    public async createSupportRequest(data: CreateSupportRequest): Promise<SupportRequest> {
         const model = new this.SupportRequestModel(data);
         model.createdAt = new Date();
         model.isActive = true;

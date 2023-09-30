@@ -1,9 +1,9 @@
 import { Body, Controller, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { UserRoleEnum } from "src/enums/user-role.enum";
-import { Roles } from "src/modules/auth/decorators/roles.decorator";
-import { AuthenticatedGuard } from "src/modules/auth/guards/authenticated.guard";
-import { RolesGuard } from "src/modules/auth/guards/roles.guard";
 import { ID } from "src/types/ID";
+import { Roles } from "../auth/decorators/roles.decorator";
+import { AuthenticatedGuard } from "../auth/guards/authenticated.guard";
+import { RolesGuard } from "../auth/guards/roles.guard";
 import { CreateHotelRoomDto } from "./dto/create-hotel-room.dto";
 import { UpdateHotelRoomDto } from "./dto/update-hotel-room.dto";
 import { HotelsRoomFormatter } from "./hotels-room.formatter";

@@ -21,6 +21,6 @@ export class SupportRequestsClientController {
   async addSupportRequest(@Body(DtoValidationPipe) dto: CreateSupportRequestDto, @Request() req: any) {
     dto.user = req.user.id;
     const item = await this.supportRequestClientService.createSupportRequest(dto);
-    return this.supportRequestFormatter.format(item);
+    return this.supportRequestFormatter.format(item, (await this.supportRequestClientService.getUnreadCount(item.id)).length);
   }
 }

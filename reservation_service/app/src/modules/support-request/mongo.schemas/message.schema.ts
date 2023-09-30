@@ -2,11 +2,14 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, ObjectId } from 'mongoose';
 import { iMessage } from "src/interfaces/message.interface";
 import { User } from "src/modules/users/mongo.schemas/user.schema";
+import { ID } from "src/types/ID";
 
 export type MessageDocument = HydratedDocument<Message>;
 
 @Schema()
 export class Message implements iMessage {
+  id: ID;
+
   @Prop( { required: [true, 'Не указан автор'], ref: () => User, type: User })
   author: ObjectId;
 

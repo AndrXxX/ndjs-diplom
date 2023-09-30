@@ -4,11 +4,14 @@ import { iReservation } from "src/interfaces/reservation.interface";
 import { HotelRoom } from "src/modules/hotels/mongo.schemas/hotel-room.schema";
 import { Hotel } from "src/modules/hotels/mongo.schemas/hotel.schema";
 import { User } from "src/modules/users/mongo.schemas/user.schema";
+import { ID } from "src/types/ID";
 
 export type ReservationDocument = HydratedDocument<Reservation>;
 
 @Schema()
 export class Reservation implements iReservation {
+  id: ID;
+
   @Prop( { required: [true, 'Не указан пользователь'], ref: () => User, type: User })
   userId: ObjectId;
 

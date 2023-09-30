@@ -1,13 +1,14 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, ObjectId } from 'mongoose';
 import { iHotelRoom } from "src/interfaces/hotel-room.interface";
+import { ID } from "src/types/ID";
 import { Hotel } from "./hotel.schema";
 
 export type HotelRoomDocument = HydratedDocument<HotelRoom>;
 
 @Schema()
 export class HotelRoom implements iHotelRoom {
-  id: string;
+  id: ID;
 
   @Prop( { required: [true, 'Не указан отель'], ref: () => Hotel, type: Hotel })
   hotel: ObjectId;

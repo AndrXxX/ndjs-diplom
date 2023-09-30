@@ -6,6 +6,7 @@ import { Roles } from "../auth/decorators/roles.decorator";
 import { AuthenticatedGuard } from "../auth/guards/authenticated.guard";
 import { RolesGuard } from "../auth/guards/roles.guard";
 import { CreateHotelDto } from "./dto/create-hotel.dto";
+import { UpdateHotelParamsDto } from "./dto/update-hotel-params.dto";
 import { HotelsFormatter } from "./hotels.formatter";
 import { HotelsService } from "./hotels.service";
 import { SearchHotelParams } from "./interfaces/search-hotel-params.interface";
@@ -33,7 +34,7 @@ export class HotelsAdminController {
 
   @Roles(UserRoleEnum.admin)
   @Put('/:id')
-  async updateHotel(@Param('id') id: ID, @Body() updateHotelDto: UpdateHotelParams) {
-    return this.hotelsFormatter.format(await this.hotelsService.update(id, updateHotelDto));
+  async updateHotel(@Param('id') id: ID, @Body(DtoValidationPipe) dto: UpdateHotelParamsDto) {
+    return this.hotelsFormatter.format(await this.hotelsService.update(id, dto));
   }
 }

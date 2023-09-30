@@ -12,6 +12,7 @@ import {
 } from '@nestjs/common';
 import { UserRoleEnum } from "src/enums/user-role.enum";
 import { ID } from "src/types/ID";
+import { DtoValidationPipe } from "src/validators/dto.validation.pipe";
 import { Roles } from "../auth/decorators/roles.decorator";
 import { AuthenticatedGuard } from "../auth/guards/authenticated.guard";
 import { RolesGuard } from "../auth/guards/roles.guard";
@@ -31,7 +32,7 @@ export class ReservationsClientController {
 
   @Roles(UserRoleEnum.client)
   @Post("/")
-  async addReservation(@Body() dto: CreateReservationDto, @Request() req: any) {
+  async addReservation(@Body(DtoValidationPipe) dto: CreateReservationDto, @Request() req: any) {
     const room = await this.hotelsRoomService.findById(dto.hotelRoom);
     const item = await this.reservationsService.addReservation({
       userId: req.user.id,

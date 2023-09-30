@@ -8,7 +8,7 @@ import { UsersService } from "../users/users.service";
 import { SearchUserParams } from "./interfaces/search-user-params.interface";
 
 @UseGuards(AuthenticatedGuard, RolesGuard)
-@Controller('/api/manager')
+@Controller('/api/manager/users')
 export class UsersManagerController {
   constructor(
     private usersService: UsersService,
@@ -16,7 +16,7 @@ export class UsersManagerController {
   ) {}
 
   @Roles(UserRoleEnum.manager)
-  @Get("/users")
+  @Get("/")
   async usersList(@Query() query: SearchUserParams) {
     const users = await this.usersService.findAll(query);
     return users.map(user => this.usersFormatter.formatForAdmin(user));

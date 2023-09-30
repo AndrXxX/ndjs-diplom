@@ -10,7 +10,7 @@ import { HotelsService } from "./hotels.service";
 import { SearchHotelParams } from "./interfaces/search-hotel-params.interface";
 
 @UseGuards(AuthenticatedGuard, RolesGuard)
-@Controller('/api/admin')
+@Controller('/api/admin/hotels')
 export class HotelsAdminController {
   constructor(
     private hotelsService: HotelsService,
@@ -18,20 +18,20 @@ export class HotelsAdminController {
   ) {}
 
   @Roles(UserRoleEnum.admin)
-  @Post('/hotels/')
+  @Post('/')
   async addHotel(@Body() createHotelDto: CreateHotelDto) {
     return this.hotelsFormatter.format(await this.hotelsService.create(createHotelDto));
   }
 
   @Roles(UserRoleEnum.admin)
-  @Get('/hotels/')
+  @Get('/')
   async hotelsList(@Query() query: SearchHotelParams) {
     const hotels = await this.hotelsService.search(query);
     return hotels.map(hotel => this.hotelsFormatter.format(hotel));
   }
 
   @Roles(UserRoleEnum.admin)
-  @Put('/hotels/:id')
+  @Put('/:id')
   async updateHotel(@Param('id') id: ID, @Body() updateHotelDto: UpdateHotelParams) {
     return this.hotelsFormatter.format(await this.hotelsService.update(id, updateHotelDto));
   }

@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from "@nestjs/mongoose";
 import { Message, MessageSchema } from "./mongo.schemas/message.schema";
 import { SupportRequest, SupportRequestSchema } from "./mongo.schemas/support-request.schema";
+import { SupportRequestFormatter } from "./support-request.formatter";
 import { SupportRequestService } from "./support-request.service";
 
 @Module({
@@ -11,7 +12,7 @@ import { SupportRequestService } from "./support-request.service";
       { name: SupportRequest.name, schema: SupportRequestSchema },
     ]),
   ],
-  providers: [SupportRequestService],
-  exports: [SupportRequestService],
+  providers: [SupportRequestService, SupportRequestFormatter],
+  exports: [SupportRequestService, SupportRequestFormatter],
 })
 export class SupportRequestModule {}

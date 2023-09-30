@@ -4,6 +4,7 @@ import { Message, MessageSchema } from "./mongo.schemas/message.schema";
 import { SupportRequest, SupportRequestSchema } from "./mongo.schemas/support-request.schema";
 import { SupportRequestFormatter } from "./support-request.formatter";
 import { SupportRequestService } from "./support-request.service";
+import { SupportRequestsClientController } from "./support-requests-client.controller";
 
 @Module({
   imports: [
@@ -14,5 +15,6 @@ import { SupportRequestService } from "./support-request.service";
   ],
   providers: [SupportRequestService, SupportRequestFormatter],
   exports: [SupportRequestService, SupportRequestFormatter],
+  controllers: [SupportRequestsClientController],
 })
 export class SupportRequestModule {}

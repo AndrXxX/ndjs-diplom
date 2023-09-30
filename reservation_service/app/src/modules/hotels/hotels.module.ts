@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from "@nestjs/mongoose";
+import { HotelRoomsAdminController } from "./hotel-rooms-admin.controller";
 import { HotelRoomsCommonController } from "./hotel-rooms-common.controller";
 import { HotelsAdminController } from "./hotels-admin.controller";
 import { HotelsRoomFormatter } from "./hotels-room.formatter";
@@ -18,6 +19,6 @@ import { Hotel, HotelSchema } from "./mongo.schemas/hotel.schema";
   ],
   providers: [HotelsService, HotelsRoomService, HotelsFormatter, HotelsRoomFormatter],
   exports: [HotelsService, HotelsRoomService, HotelsFormatter, HotelsRoomFormatter],
-  controllers: [HotelsAdminController, HotelRoomsCommonController],
+  controllers: [HotelsAdminController, HotelRoomsCommonController, HotelRoomsAdminController],
 })
 export class HotelsModule {}

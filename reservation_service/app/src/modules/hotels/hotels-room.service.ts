@@ -2,7 +2,6 @@ import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { ID } from "src/types/ID";
-import { CreateHotelRoomDto } from "./dto/create-hotel-room.dto";
 import { UpdateHotelRoomDto } from "./dto/update-hotel-room.dto";
 import { IHotelsRoomService } from "./interfaces/hotels-room-service.interface";
 import { SearchRoomsParams } from "./interfaces/search-rooms-params.interface";
@@ -14,7 +13,7 @@ export class HotelsRoomService implements IHotelsRoomService {
       @InjectModel(HotelRoom.name) private HotelRoomModel: Model<HotelRoomDocument>,
     ) {}
 
-    public async create(data: Partial<CreateHotelRoomDto>): Promise<HotelRoomDocument> {
+    public async create(data: Partial<HotelRoom>): Promise<HotelRoomDocument> {
         const model = new this.HotelRoomModel(data);
         await model.save();
         return model;

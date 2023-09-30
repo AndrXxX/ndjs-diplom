@@ -9,5 +9,5 @@ export class CreateHotelRoomDto {
   description: string;
 
   @IsArray()
-  images: File[];
+  images: any[]; // TODO File[]
 }

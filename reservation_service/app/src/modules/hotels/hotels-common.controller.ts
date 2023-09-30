@@ -1,5 +1,6 @@
-import { Controller, Get, Query, Request } from '@nestjs/common';
+import { Controller, Get, Param, Query, Request } from '@nestjs/common';
 import { UserRoleEnum } from "src/enums/user-role.enum";
+import { ID } from "src/types/ID";
 import { HotelsRoomFormatter } from "./hotels-room.formatter";
 import { HotelsRoomService } from "./hotels-room.service";
 import { SearchRoomsParams } from "./interfaces/search-rooms-params.interface";
@@ -18,5 +19,11 @@ export class HotelsCommonController {
     }
     const rooms = await this.hotelsRoomService.search(query);
     return rooms.map(room => this.hotelsRoomFormatter.format(room));
+  }
+
+  @Get("hotel-rooms/:id")
+  async hotelRoom(@Param('id') id: ID) {
+    const room = await this.hotelsRoomService.findById(id);
+    return room ? this.hotelsRoomFormatter.format(room) : {};
   }
 }

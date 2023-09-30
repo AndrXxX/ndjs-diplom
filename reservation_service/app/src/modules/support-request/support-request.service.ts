@@ -19,7 +19,11 @@ export class SupportRequestService implements ISupportRequestService {
     ) {}
 
     public async findSupportRequests(params: GetChatListParams): Promise<SupportRequest[]> {
-        return await this.SupportRequestModel.find(params).select('-__v').exec();
+        const { limit, offset, ...queryParams } = params;
+        const query = this.SupportRequestModel.find(queryParams);
+        limit && query.limit(limit);
+        offset && query.skip(offset);
+        return await query.select('-__v').exec();
     }
 
     public async sendMessage(data: SendMessageDto): Promise<Message> {

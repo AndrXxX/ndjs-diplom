@@ -1,14 +1,14 @@
 import { Body, Controller, Get, Post, Query, Request, UseGuards, } from '@nestjs/common';
 import { UserRoleEnum } from "src/enums/user-role.enum";
-import { GetChatListParams } from "src/modules/support-request/interfaces/get-chat-list-params.interface";
-import { SupportRequestService } from "src/modules/support-request/support-request.service";
 import { DtoValidationPipe } from "src/validators/dto.validation.pipe";
 import { Roles } from "../auth/decorators/roles.decorator";
 import { AuthenticatedGuard } from "../auth/guards/authenticated.guard";
 import { RolesGuard } from "../auth/guards/roles.guard";
 import { CreateSupportRequestDto } from "./dto/create-support-request.dto";
+import { GetChatListParams } from "./interfaces/get-chat-list-params.interface";
 import { SupportRequestClientService } from "./support-request-client.service";
 import { SupportRequestFormatter } from "./support-request.formatter";
+import { SupportRequestService } from "./support-request.service";
 
 @UseGuards(AuthenticatedGuard, RolesGuard)
 @Controller('/api/client/support-requests')

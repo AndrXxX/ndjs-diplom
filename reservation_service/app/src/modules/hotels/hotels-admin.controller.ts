@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { UserRoleEnum } from "src/enums/user-role.enum";
 import { ID } from "src/types/ID";
+import { DtoValidationPipe } from "src/validators/dto.validation.pipe";
 import { Roles } from "../auth/decorators/roles.decorator";
 import { AuthenticatedGuard } from "../auth/guards/authenticated.guard";
 import { RolesGuard } from "../auth/guards/roles.guard";
@@ -19,7 +20,7 @@ export class HotelsAdminController {
 
   @Roles(UserRoleEnum.admin)
   @Post('/')
-  async addHotel(@Body() createHotelDto: CreateHotelDto) {
+  async addHotel(@Body(DtoValidationPipe) createHotelDto: CreateHotelDto) {
     return this.hotelsFormatter.format(await this.hotelsService.create(createHotelDto));
   }
 

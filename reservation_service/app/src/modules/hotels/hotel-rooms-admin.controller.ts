@@ -1,6 +1,7 @@
 import { Body, Controller, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { UserRoleEnum } from "src/enums/user-role.enum";
 import { ID } from "src/types/ID";
+import { DtoValidationPipe } from "src/validators/dto.validation.pipe";
 import { Roles } from "../auth/decorators/roles.decorator";
 import { AuthenticatedGuard } from "../auth/guards/authenticated.guard";
 import { RolesGuard } from "../auth/guards/roles.guard";
@@ -19,14 +20,14 @@ export class HotelRoomsAdminController {
 
   @Roles(UserRoleEnum.admin)
   @Post('/')
-  async addHotelRoom(@Body() createHotelRoomDto: CreateHotelRoomDto) {
+  async addHotelRoom(@Body(DtoValidationPipe) createHotelRoomDto: CreateHotelRoomDto) {
     // TODO: Этот запрос предполагает загрузку файлов и должен использовать формат multipart/form-data.
     return this.hotelsRoomFormatter.format(await this.hotelsRoomService.create(createHotelRoomDto));
   }
 
   @Roles(UserRoleEnum.admin)
   @Put('/:id')
-  async updateHotelRoom(@Param('id') id: ID, @Body() updateHotelRoomDto: UpdateHotelRoomDto) {
+  async updateHotelRoom(@Param('id') id: ID, @Body(DtoValidationPipe) updateHotelRoomDto: UpdateHotelRoomDto) {
     // TODO: Этот запрос предполагает загрузку файлов и должен использовать формат multipart/form-data.
     // TODO: При обновлении может быть отправлен одновременно список ссылок на уже загруженные картинки и список файлов с новыми картинками.
     // TODO: При использовании multer список загруженных файлов можно получить через @UploadedFiles(). Этот список нужно объединить со списком, который пришёл в body.

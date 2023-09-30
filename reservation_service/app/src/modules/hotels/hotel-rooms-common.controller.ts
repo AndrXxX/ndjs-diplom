@@ -5,14 +5,14 @@ import { HotelsRoomFormatter } from "./hotels-room.formatter";
 import { HotelsRoomService } from "./hotels-room.service";
 import { SearchRoomsParams } from "./interfaces/search-rooms-params.interface";
 
-@Controller('/api/common')
-export class HotelsCommonController {
+@Controller('/api/common/hotel-rooms')
+export class HotelRoomsCommonController {
   constructor(
     private hotelsRoomService: HotelsRoomService,
     private hotelsRoomFormatter: HotelsRoomFormatter,
   ) {}
 
-  @Get("/hotel-rooms")
+  @Get("/")
   async hotelRooms(@Query() query: SearchRoomsParams, @Request() req: any) {
     if (!req.user || [UserRoleEnum.client].includes(req.user.role)) {
       query.isEnabled = true;
@@ -21,7 +21,7 @@ export class HotelsCommonController {
     return rooms.map(room => this.hotelsRoomFormatter.format(room));
   }
 
-  @Get("hotel-rooms/:id")
+  @Get("/:id")
   async hotelRoom(@Param('id') id: ID) {
     const room = await this.hotelsRoomService.findById(id);
     return room ? this.hotelsRoomFormatter.format(room) : {};

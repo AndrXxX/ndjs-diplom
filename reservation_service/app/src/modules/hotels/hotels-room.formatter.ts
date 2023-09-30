@@ -3,7 +3,7 @@ import { HotelsFormatter } from "./hotels.formatter";
 import { HotelRoom } from "./mongo.schemas/hotel-room.schema";
 
 @Injectable()
-export class FormatHotelRoomService {
+export class HotelsRoomFormatter {
 
     constructor(
       private hotelsFormatter: HotelsFormatter,

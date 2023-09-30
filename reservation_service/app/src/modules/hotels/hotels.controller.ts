@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { HotelsFormatter } from "src/modules/hotels/hotels.formatter";
 import { CreateHotelDto } from "./dto/create-hotel.dto";
-import { FormatHotelRoomService } from "./format-hotel-room.service";
+import { HotelsRoomFormatter } from "./hotels-room.formatter";
 import { HotelsRoomService } from "./hotels-room.service";
 import { HotelsService } from "./hotels.service";
 import { SearchHotelParams } from "./interfaces/search-hotel-params.interface";
@@ -13,7 +13,7 @@ export class HotelsController {
     private hotelsService: HotelsService,
     private hotelRoomsService: HotelsRoomService,
     private hotelsFormatter: HotelsFormatter,
-    private formatHotelRoomService: FormatHotelRoomService,
+    private hotelsRoomFormatter: HotelsRoomFormatter,
   ) {}
 
   @Post('/admin/hotels/')
@@ -41,12 +41,12 @@ export class HotelsController {
   async hotelRoomsList(@Query() query: SearchRoomsParams) {
     // TODO: Если пользователь не аутентифицирован или его роль client, то при поиске всегда должен использоваться флаг isEnabled: true.
     const rooms = await this.hotelRoomsService.search(query);
-    return rooms.map(room => this.formatHotelRoomService.format(room));
+    return rooms.map(room => this.hotelsRoomFormatter.format(room));
   }
 
   @Get('/common/hotel-rooms/:id')
   async hotelRoom(@Param('id') id: string) {
     const room = await this.hotelRoomsService.findById(id);
-    return room ? this.formatHotelRoomService.format(room) : {};
+    return room ? this.hotelsRoomFormatter.format(room) : {};
   }
 }

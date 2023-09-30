@@ -1,9 +1,14 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
+import { UserRoleEnum } from "src/enums/user-role.enum";
+import { Roles } from "src/modules/auth/decorators/roles.decorator";
+import { AuthenticatedGuard } from "src/modules/auth/guards/authenticated.guard";
+import { RolesGuard } from "src/modules/auth/guards/roles.guard";
 import { HotelsFormatter } from "src/modules/hotels/hotels.formatter";
 import { CreateHotelDto } from "./dto/create-hotel.dto";
 import { HotelsService } from "./hotels.service";
 import { SearchHotelParams } from "./interfaces/search-hotel-params.interface";
 
+@UseGuards(AuthenticatedGuard, RolesGuard)
 @Controller('/api/admin')
 export class HotelsAdminController {
   constructor(
@@ -11,23 +16,15 @@ export class HotelsAdminController {
     private hotelsFormatter: HotelsFormatter,
   ) {}
 
+  @Roles(UserRoleEnum.admin)
   @Post('/hotels/')
   async addHotel(@Body() createHotelDto: CreateHotelDto) {
-    // TODO: Доступно только аутентифицированным пользователям с ролью admin.
-    //
-    // Ошибки
-    // 401 - если пользователь не аутентифицирован;
-    // 403 - если роль пользователя не admin.
     return this.hotelsFormatter.format(await this.hotelsService.create(createHotelDto))
   }
 
+  @Roles(UserRoleEnum.admin)
   @Get('/hotels/')
   async hotelsList(@Query() query: SearchHotelParams) {
-    // TODO: Доступно только аутентифицированным пользователям с ролью admin.
-    //
-    // Ошибки
-    // 401 - если пользователь не аутентифицирован;
-    // 403 - если роль пользователя не admin.
     const hotels = await this.hotelsService.search(query);
     return hotels.map(hotel => this.hotelsFormatter.format(hotel));
   }

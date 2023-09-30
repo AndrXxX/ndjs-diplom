@@ -1,4 +1,4 @@
-import { Controller, Get, Param, UseGuards, } from '@nestjs/common';
+import { BadRequestException, Controller, Delete, Get, Param, Request, UseGuards, } from '@nestjs/common';
 import { UserRoleEnum } from "src/enums/user-role.enum";
 import { ID } from "src/types/ID";
 import { Roles } from "../auth/decorators/roles.decorator";
@@ -20,5 +20,15 @@ export class ReservationsManagerController {
   async reservationsList(@Param('userId') userId: ID) {
     const items = await this.reservationsService.getReservations({ userId });
     return items.map(item => this.reservationsFormatter.format(item));
+  }
+
+  @Roles(UserRoleEnum.manager)
+  @Delete('/:id')
+  async deleteReservation(@Param('id') id: ID, @Request() req: any) {
+    const item = await this.reservationsService.findById(id);
+    if (!item) {
+      throw new BadRequestException('Reservation is not exist');
+    }
+    return await this.reservationsService.removeReservation(id);
   }
 }

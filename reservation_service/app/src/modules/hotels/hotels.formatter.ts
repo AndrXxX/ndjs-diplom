@@ -8,4 +8,9 @@ export class HotelsFormatter {
         const { id, title, description } = hotel;
         return { id, title, description }
     }
+
+    public formatForClient(hotel: Hotel) {
+        const { title, description } = hotel;
+        return { title, description }
+    }
 }

@@ -13,4 +13,9 @@ export class HotelsRoomFormatter {
         const { id, description, images } = room;
         return { id, description, images, hotel: this.hotelsFormatter.format(room.hotel as any) } //TODO
     }
+
+    public formatForClient(room: HotelRoom) {
+        const { description, images } = room;
+        return { description, images}
+    }
 }

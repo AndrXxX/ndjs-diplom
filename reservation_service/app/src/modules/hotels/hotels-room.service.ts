@@ -2,7 +2,6 @@ import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { ID } from "src/types/ID";
-import { UpdateHotelRoomDto } from "./dto/update-hotel-room.dto";
 import { IHotelsRoomService } from "./interfaces/hotels-room-service.interface";
 import { SearchRoomsParams } from "./interfaces/search-rooms-params.interface";
 import { HotelRoom, HotelRoomDocument } from "./mongo.schemas/hotel-room.schema";

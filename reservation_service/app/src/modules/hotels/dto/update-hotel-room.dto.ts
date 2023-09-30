@@ -1,12 +1,11 @@
 import { IsArray, IsBoolean, IsDate, IsDefined, IsString } from "class-validator";
-import { HotelRoom } from "src/modules/hotels/mongo.schemas/hotel-room.schema";
 
-export class UpdateHotelRoomDto extends HotelRoom {
+export class UpdateHotelRoomDto {
   @IsString()
   description: string;
 
   @IsArray()
-  images: string[];
+  images: File[] | string[];
 
   @IsDefined() @IsDate()
   createdAt: Date;

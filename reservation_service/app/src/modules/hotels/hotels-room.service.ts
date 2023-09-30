@@ -30,7 +30,7 @@ export class HotelsRoomService implements IHotelsRoomService {
         return await this.HotelRoomModel.find(params).select('-__v').exec();
     }
 
-    async update(id: ID, data: Partial<UpdateHotelRoomDto>): Promise<HotelRoomDocument | undefined> {
+    async update(id: ID, data: Partial<HotelRoom>): Promise<HotelRoomDocument | undefined> {
         this.HotelRoomModel.updateOne({ id }, data);
         return this.findById(id);
     }

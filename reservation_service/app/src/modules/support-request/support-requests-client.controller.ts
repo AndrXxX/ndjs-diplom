@@ -24,7 +24,7 @@ export class SupportRequestsClientController {
   async addSupportRequest(@Body(DtoValidationPipe) dto: CreateSupportRequestDto, @Request() req: any) {
     dto.user = req.user.id;
     const item = await this.supportRequestClientService.createSupportRequest(dto);
-    return this.supportRequestFormatter.format(item, (await this.supportRequestClientService.getUnreadCount(item.id)).length);
+    return this.supportRequestFormatter.formatForClient(item, (await this.supportRequestClientService.getUnreadCount(item.id)).length);
   }
 
   @Roles(UserRoleEnum.client)
@@ -33,6 +33,6 @@ export class SupportRequestsClientController {
     query.user = req.user.id;
     const items = await this.supportRequestService.findSupportRequests(query);
     const counter = this.supportRequestClientService.getUnreadCount;
-    return Promise.all(items.map(async item => this.supportRequestFormatter.format(item, (await counter(item.id)).length)));
+    return Promise.all(items.map(async item => this.supportRequestFormatter.formatForClient(item, (await counter(item.id)).length)));
   }
 }

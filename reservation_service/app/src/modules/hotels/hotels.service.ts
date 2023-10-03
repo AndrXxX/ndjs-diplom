@@ -31,7 +31,7 @@ export class HotelsService implements IHotelsService {
     }
 
     async update(id: ID, data: UpdateHotelParams): Promise<Hotel | undefined> {
-        this.HotelModel.updateOne({ id }, data);
+        await this.HotelModel.findByIdAndUpdate(id, data);
         return this.findById(id);
     }
 }

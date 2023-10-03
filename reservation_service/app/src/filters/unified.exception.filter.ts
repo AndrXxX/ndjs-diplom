@@ -16,7 +16,7 @@ export class UnifiedExceptionFilter implements ExceptionFilter {
       .json({
         timestamp: new Date().toISOString(),
         statusCode: status || 500,
-        status: "fail",
+        success: false,
         data: exception.message,
       });
   }

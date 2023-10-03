@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { ID } from "src/types/ID";
-import { MarkMessagesAsReadDto } from "./interfaces/mark-messages-as-read-dto.interface";
+import { MarkMessagesAsRead } from "./interfaces/mark-messages-as-read.interface";
 import { ISupportRequestEmployeeService } from "./interfaces/support-request-employee-service.interface";
 import { Message } from "./mongo.schemas/message.schema";
 import { SupportRequest, SupportRequestDocument } from "./mongo.schemas/support-request.schema";
@@ -16,7 +16,7 @@ export class SupportRequestEmployeeService implements ISupportRequestEmployeeSer
       @InjectModel(SupportRequest.name) private SupportRequestModel: Model<SupportRequestDocument>,
     ) {}
 
-    public async markMessagesAsRead(params: MarkMessagesAsReadDto) {
+    public async markMessagesAsRead(params: MarkMessagesAsRead) {
         (await this.findById(params.supportRequest))?.messages
           .filter(message => message.author == params.user)
           .filter(message => message.sentAt < params.createdBefore)

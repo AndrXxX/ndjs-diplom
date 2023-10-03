@@ -3,7 +3,7 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { CreateSupportRequest } from "./interfaces/create-support-request.interface";
 import { ID } from "src/types/ID";
-import { MarkMessagesAsReadDto } from "./interfaces/mark-messages-as-read-dto.interface";
+import { MarkMessagesAsRead } from "./interfaces/mark-messages-as-read.interface";
 import { ISupportRequestClientService } from "./interfaces/support-request-client-service.interface";
 import { Message } from "./mongo.schemas/message.schema";
 import { SupportRequest, SupportRequestDocument } from "./mongo.schemas/support-request.schema";
@@ -26,7 +26,7 @@ export class SupportRequestClientService implements ISupportRequestClientService
         return model;
     }
 
-    public async markMessagesAsRead(params: MarkMessagesAsReadDto): Promise<void> {
+    public async markMessagesAsRead(params: MarkMessagesAsRead): Promise<void> {
         (await this.findById(params.supportRequest))?.messages
           .filter(message => message.author != params.user)
           .filter(message => message.sentAt < params.createdBefore)

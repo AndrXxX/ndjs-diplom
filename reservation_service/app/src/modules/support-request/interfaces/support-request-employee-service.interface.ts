@@ -1,9 +1,9 @@
 import { ID } from "src/types/ID";
 import { Message } from "../mongo.schemas/message.schema";
-import { MarkMessagesAsReadDto } from "./mark-messages-as-read-dto.interface";
+import { MarkMessagesAsRead } from "./mark-messages-as-read.interface";
 
 export interface ISupportRequestEmployeeService {
-  markMessagesAsRead(params: MarkMessagesAsReadDto): Promise<void>;
+  markMessagesAsRead(params: MarkMessagesAsRead): Promise<void>;
   getUnreadCount(supportRequest: ID): Promise<Message[]>;
   closeRequest(supportRequest: ID): Promise<void>;
 }

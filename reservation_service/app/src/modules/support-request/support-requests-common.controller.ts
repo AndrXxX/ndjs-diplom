@@ -1,5 +1,6 @@
-import { Controller, ForbiddenException, Get, Param, Request, UseGuards, } from '@nestjs/common';
+import { Controller, ForbiddenException, Get, NotFoundException, Param, Request, UseGuards, } from '@nestjs/common';
 import { UserRoleEnum } from "src/enums/user-role.enum";
+import { User } from "src/modules/users/mongo.schemas/user.schema";
 import { ID } from "src/types/ID";
 import { Roles } from "../auth/decorators/roles.decorator";
 import { AuthenticatedGuard } from "../auth/guards/authenticated.guard";
@@ -18,13 +19,18 @@ export class SupportRequestsCommonController {
   @Roles(UserRoleEnum.manager, UserRoleEnum.client)
   @Get("/:id/messages")
   async messages(@Param('id') id: ID, @Request() req: any) {
-    if ([UserRoleEnum.client].includes(req.user.id)) {
-      const supportRequest = await this.supportRequestService.findById(id);
-      if (supportRequest.user !== req.user.id) {
-        throw new ForbiddenException('You can not access to this support request');
-      }
+    const supportRequest = await this.getSupportRequest(id, req.user);
+    return supportRequest.messages.map(item => this.messageFormatter.format(item));
+  }
+
+  private async getSupportRequest(id: ID, user: User) {
+    const supportRequest = await this.supportRequestService.findById(id);
+    if (!supportRequest) {
+      throw new NotFoundException(`SupportRequest #${id} not found`);
     }
-    const items = await this.supportRequestService.getMessages(id);
-    return items.map(item => this.messageFormatter.format(item));
+    if ([UserRoleEnum.client as string].includes(user.role) && supportRequest.user !== user.id) {
+      throw new ForbiddenException('You can not access to this support request');
+    }
+    return supportRequest;
   }
 }

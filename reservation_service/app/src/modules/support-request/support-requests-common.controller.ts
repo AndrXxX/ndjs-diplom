@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   ForbiddenException,
@@ -10,13 +11,16 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { UserRoleEnum } from "src/enums/user-role.enum";
-import { CreateSupportRequestDto } from "src/modules/support-request/dto/send-message.dto";
 import { User } from "src/modules/users/mongo.schemas/user.schema";
 import { ID } from "src/types/ID";
 import { DtoValidationPipe } from "src/validators/dto.validation.pipe";
 import { Roles } from "../auth/decorators/roles.decorator";
 import { AuthenticatedGuard } from "../auth/guards/authenticated.guard";
 import { RolesGuard } from "../auth/guards/roles.guard";
+import { MarkMessagesAsReadDto } from "./dto/mark-messages-as-read.dto";
+import { CreateSupportRequestDto } from "./dto/send-message.dto";
+import { SupportRequestClientService } from "./support-request-client.service";
+import { SupportRequestEmployeeService } from "./support-request-employee.service";
 import { SupportRequestMessageFormatter } from "./support-request-message.formatter";
 import { SupportRequestService } from "./support-request.service";
 
@@ -26,6 +30,8 @@ export class SupportRequestsCommonController {
   constructor(
     private messageFormatter: SupportRequestMessageFormatter,
     private supportRequestService: SupportRequestService,
+    private employeeService: SupportRequestEmployeeService,
+    private clientService: SupportRequestClientService,
   ) {}
 
   @Roles(UserRoleEnum.manager, UserRoleEnum.client)
@@ -47,6 +53,27 @@ export class SupportRequestsCommonController {
     dto.author = req.user.id;
     const message = await this.supportRequestService.sendMessage(dto)
     return this.messageFormatter.format(message);
+  }
+
+  @Roles(UserRoleEnum.manager, UserRoleEnum.client)
+  @Post("/:id/messages/read")
+  async setMessageRead(
+    @Param('id') id: ID,
+    @Request() req: any,
+    @Body(DtoValidationPipe) dto: MarkMessagesAsReadDto
+  ) {
+    await this.getSupportRequest(id, req.user);
+    dto.supportRequest = id;
+    dto.user = req.user.id;
+    if ([UserRoleEnum.client as string].includes(req.user.role)) {
+      await this.clientService.markMessagesAsRead(dto);
+      return { success: true };
+    }
+    if ([UserRoleEnum.manager as string].includes(req.user.role)) {
+      await this.employeeService.markMessagesAsRead(dto);
+      return { success: true };
+    }
+    throw new BadRequestException('Unknown user role');
   }
 
   private async getSupportRequest(id: ID, user: User) {

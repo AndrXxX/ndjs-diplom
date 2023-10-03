@@ -1,4 +1,4 @@
-import { IsDate, IsDefined, IsString } from "class-validator";
+import { IsDefined, IsString } from "class-validator";
 import { Hotel } from "src/modules/hotels/mongo.schemas/hotel.schema";
 
 export class CreateHotelDto extends Hotel {
@@ -8,9 +8,6 @@ export class CreateHotelDto extends Hotel {
   @IsString()
   description: string;
 
-  @IsDate()
   createdAt: Date;
-
-  @IsDate()
   updatedAt: Date;
 }

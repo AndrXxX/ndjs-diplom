@@ -7,6 +7,7 @@ import { SupportRequestMessageFormatter } from "./support-request-message.format
 import { SupportRequestFormatter } from "./support-request.formatter";
 import { SupportRequestService } from "./support-request.service";
 import { SupportRequestsClientController } from "./support-requests-client.controller";
+import { SupportRequestsCommonController } from "./support-requests-common.controller";
 import { SupportRequestsManagerController } from "./support-requests-manager.controller";
 
 @Module({
@@ -19,6 +20,6 @@ import { SupportRequestsManagerController } from "./support-requests-manager.con
   ],
   providers: [SupportRequestService, SupportRequestFormatter, SupportRequestMessageFormatter],
   exports: [SupportRequestService, SupportRequestFormatter, SupportRequestMessageFormatter],
-  controllers: [SupportRequestsClientController, SupportRequestsManagerController],
+  controllers: [SupportRequestsClientController, SupportRequestsManagerController, SupportRequestsCommonController],
 })
 export class SupportRequestModule {}

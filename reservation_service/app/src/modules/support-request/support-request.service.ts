@@ -3,7 +3,7 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { ID } from "src/types/ID";
 import { GetChatListParams } from "./interfaces/get-chat-list-params.interface";
-import { SendMessageDto } from "./interfaces/send-message-dto.interface";
+import { SendMessage } from "./interfaces/send-message.interface";
 import { ISupportRequestService } from "./interfaces/support-request-service.interface";
 import { Message, MessageDocument } from "./mongo.schemas/message.schema";
 import { SupportRequest, SupportRequestDocument } from "./mongo.schemas/support-request.schema";
@@ -26,7 +26,7 @@ export class SupportRequestService implements ISupportRequestService {
         return await query.select('-__v').exec();
     }
 
-    public async sendMessage(data: SendMessageDto): Promise<Message> {
+    public async sendMessage(data: SendMessage): Promise<Message> {
         const request = await this.findById(data.supportRequest);
         if (!request) {
             throw new Error(`Unable to find supportRequest with id ${data.supportRequest}`)

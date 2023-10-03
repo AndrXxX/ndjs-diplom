@@ -23,7 +23,11 @@ export class HotelsService implements IHotelsService {
     }
 
     async search(params: SearchHotelParams): Promise<HotelDocument[]> {
-        return await this.HotelModel.find(params).select('-__v').exec();
+        const { limit, offset, ...queryParams } = params;
+        const query = this.HotelModel.find(queryParams);
+        limit && query.limit(limit);
+        offset && query.skip(offset);
+        return await query.select('-__v').exec();
     }
 
     async update(id: ID, data: UpdateHotelParams): Promise<Hotel | undefined> {

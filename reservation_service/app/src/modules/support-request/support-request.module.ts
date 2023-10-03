@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from "@nestjs/mongoose";
+import { SupportRequestClientService } from "src/modules/support-request/support-request-client.service";
+import { SupportRequestEmployeeService } from "src/modules/support-request/support-request-employee.service";
 import { UsersModule } from "../users/users.module";
 import { Message, MessageSchema } from "./mongo.schemas/message.schema";
 import { SupportRequest, SupportRequestSchema } from "./mongo.schemas/support-request.schema";
@@ -18,7 +20,7 @@ import { SupportRequestsManagerController } from "./support-requests-manager.con
     ]),
     UsersModule,
   ],
-  providers: [SupportRequestService, SupportRequestFormatter, SupportRequestMessageFormatter],
+  providers: [SupportRequestService, SupportRequestFormatter, SupportRequestMessageFormatter, SupportRequestClientService, SupportRequestEmployeeService],
   exports: [SupportRequestService, SupportRequestFormatter, SupportRequestMessageFormatter],
   controllers: [SupportRequestsClientController, SupportRequestsManagerController, SupportRequestsCommonController],
 })

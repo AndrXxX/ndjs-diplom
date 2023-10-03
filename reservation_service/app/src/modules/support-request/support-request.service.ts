@@ -48,7 +48,7 @@ export class SupportRequestService implements ISupportRequestService {
         return () => {};
     }
 
-    private async findById(id: ID): Promise<SupportRequestDocument | undefined> {
+    public async findById(id: ID): Promise<SupportRequestDocument | undefined> {
         return await this.SupportRequestModel.findById(id).select('-__v').exec();
     }
 }

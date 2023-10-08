@@ -10,12 +10,12 @@ export class HotelsRoomFormatter {
     ) {}
 
     public format(room: HotelRoom) {
-        const { id, description, images } = room;
-        return { id, description, images, hotel: this.hotelsFormatter.format(room.hotel as any) } //TODO
+        const { id, description, images, isEnabled } = room;
+        return { id, description, images, isEnabled, hotel: this.hotelsFormatter.format(room.hotel as any) };
     }
 
     public formatForClient(room: HotelRoom) {
         const { description, images } = room;
-        return { description, images}
+        return { description, images };
     }
 }

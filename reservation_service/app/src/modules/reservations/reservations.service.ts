@@ -18,7 +18,7 @@ export class ReservationsService implements IReservationService {
         // TODO: Метод IReservation.addReservation должен проверять, доступен ли номер на заданную дату.
         const model = new this.ReservationModel(data);
         await model.save();
-        return model;
+        return await this.findById(model.id);
     }
 
     async removeReservation(id: ID): Promise<void> {
@@ -30,6 +30,9 @@ export class ReservationsService implements IReservationService {
     }
 
     async findById(id: ID): Promise<ReservationDocument | undefined> {
-        return await this.ReservationModel.findById(id).select('-__v').exec();
+        return await this.ReservationModel.findById(id).populate(['userId', {
+            path: 'roomId',
+            populate: { path: 'hotel' }
+        }]).select('-__v').exec();
     }
 }

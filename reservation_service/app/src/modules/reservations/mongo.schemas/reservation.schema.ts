@@ -2,7 +2,6 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument, ObjectId } from 'mongoose';
 import { iReservation } from "src/interfaces/reservation.interface";
 import { HotelRoom } from "src/modules/hotels/mongo.schemas/hotel-room.schema";
-import { Hotel } from "src/modules/hotels/mongo.schemas/hotel.schema";
 import { User } from "src/modules/users/mongo.schemas/user.schema";
 import { ID } from "src/types/ID";
 
@@ -14,9 +13,6 @@ export class Reservation implements iReservation {
 
   @Prop( { required: [true, 'Не указан пользователь'], ref: () => User, type: mongoose.Types.ObjectId })
   userId: ObjectId;
-
-  @Prop( { required: [true, 'Не указан отель'], ref: () => Hotel, type: mongoose.Types.ObjectId })
-  hotelId: ObjectId;
 
   @Prop( { required: [true, 'Не указана комната'], ref: () => HotelRoom, type: mongoose.Types.ObjectId })
   roomId: ObjectId;

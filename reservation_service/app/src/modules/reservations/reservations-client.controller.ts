@@ -33,10 +33,8 @@ export class ReservationsClientController {
   @Roles(UserRoleEnum.client)
   @Post("/")
   async addReservation(@Body(DtoValidationPipe) dto: CreateReservationDto, @Request() req: any) {
-    const room = await this.hotelsRoomService.findById(dto.hotelRoom);
     const item = await this.reservationsService.addReservation({
       userId: req.user.id,
-      hotelId: room.hotel,
       roomId: dto.hotelRoom,
       dateStart: dto.startDate,
       dateEnd: dto.endDate,

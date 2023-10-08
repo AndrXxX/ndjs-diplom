@@ -4,6 +4,7 @@ import { ImagesFilesInterceptor } from "src/interceptors/images.files.intercepto
 import { HotelRoom } from "src/modules/hotels/mongo.schemas/hotel-room.schema";
 import { ID } from "src/types/ID";
 import { DtoValidationPipe } from "src/validators/dto.validation.pipe";
+import { ImagesValidationPipe } from "src/validators/images.validation.pipe";
 import { Roles } from "../auth/decorators/roles.decorator";
 import { AuthenticatedGuard } from "../auth/guards/authenticated.guard";
 import { RolesGuard } from "../auth/guards/roles.guard";
@@ -25,7 +26,7 @@ export class HotelRoomsAdminController {
   @UseInterceptors(ImagesFilesInterceptor())
   async addHotelRoom(
     @Body(DtoValidationPipe) createHotelRoomDto: CreateHotelRoomDto,
-    @UploadedFiles() images: Array<Express.Multer.File>
+    @UploadedFiles(ImagesValidationPipe()) images: Array<Express.Multer.File>
   ) {
     const params: Partial<HotelRoom> = Object.assign({}, createHotelRoomDto, {
       hotel: createHotelRoomDto.hotelId,

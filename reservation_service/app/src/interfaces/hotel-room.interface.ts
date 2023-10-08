@@ -1,7 +1,7 @@
-import { ObjectId } from "mongoose";
+import { ID } from "src/types/ID";
 
 export interface iHotelRoom {
-  hotel: ObjectId;
+  hotel: ID;
   description: string;
   images: string[];
   createdAt: Date;

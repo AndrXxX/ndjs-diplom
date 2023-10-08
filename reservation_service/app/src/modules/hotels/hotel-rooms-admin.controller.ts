@@ -1,5 +1,7 @@
-import { Body, Controller, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Param, Post, Put, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
 import { UserRoleEnum } from "src/enums/user-role.enum";
+import { ImagesFilesInterceptor } from "src/interceptors/images.files.interceptor";
+import { HotelRoom } from "src/modules/hotels/mongo.schemas/hotel-room.schema";
 import { ID } from "src/types/ID";
 import { DtoValidationPipe } from "src/validators/dto.validation.pipe";
 import { Roles } from "../auth/decorators/roles.decorator";
@@ -20,9 +22,16 @@ export class HotelRoomsAdminController {
 
   @Roles(UserRoleEnum.admin)
   @Post('/')
-  async addHotelRoom(@Body(DtoValidationPipe) createHotelRoomDto: CreateHotelRoomDto) {
-    // TODO: Этот запрос предполагает загрузку файлов и должен использовать формат multipart/form-data.
-    return this.hotelsRoomFormatter.format(await this.hotelsRoomService.create(createHotelRoomDto));
+  @UseInterceptors(ImagesFilesInterceptor())
+  async addHotelRoom(
+    @Body(DtoValidationPipe) createHotelRoomDto: CreateHotelRoomDto,
+    @UploadedFiles() images: Array<Express.Multer.File>
+  ) {
+    const params: Partial<HotelRoom> = Object.assign({}, createHotelRoomDto, {
+      hotel: createHotelRoomDto.hotelId,
+      images: images.map(image => image.path),
+    });
+    return this.hotelsRoomFormatter.format(await this.hotelsRoomService.create(params));
   }
 
   @Roles(UserRoleEnum.admin)

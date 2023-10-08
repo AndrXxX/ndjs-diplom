@@ -15,18 +15,18 @@ export class HotelsRoomService implements IHotelsRoomService {
     public async create(data: Partial<HotelRoom>): Promise<HotelRoomDocument> {
         const model = new this.HotelRoomModel(data);
         await model.save();
-        return model;
+        return await this.findById(model.id);
     }
 
     async findById(id: ID): Promise<HotelRoomDocument | undefined> {
-        return await this.HotelRoomModel.findById(id).select('-__v').exec();
+        return await this.HotelRoomModel.findById(id).populate('hotel').select('-__v').exec();
     }
 
     async search(params: SearchRoomsParams): Promise<HotelRoomDocument[]> {
         if (params.isEnabled === undefined) {
             delete params.isEnabled;
         }
-        return await this.HotelRoomModel.find(params).select('-__v').exec();
+        return await this.HotelRoomModel.find(params).populate('hotel').select('-__v').exec();
     }
 
     async update(id: ID, data: Partial<HotelRoom>): Promise<HotelRoomDocument | undefined> {

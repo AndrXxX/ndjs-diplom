@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument, ObjectId } from 'mongoose';
+import mongoose, { HydratedDocument, ObjectId } from 'mongoose';
 import { iReservation } from "src/interfaces/reservation.interface";
 import { HotelRoom } from "src/modules/hotels/mongo.schemas/hotel-room.schema";
 import { Hotel } from "src/modules/hotels/mongo.schemas/hotel.schema";
@@ -12,13 +12,13 @@ export type ReservationDocument = HydratedDocument<Reservation>;
 export class Reservation implements iReservation {
   id: ID;
 
-  @Prop( { required: [true, 'Не указан пользователь'], ref: () => User, type: User })
+  @Prop( { required: [true, 'Не указан пользователь'], ref: () => User, type: mongoose.Types.ObjectId })
   userId: ObjectId;
 
-  @Prop( { required: [true, 'Не указан отель'], ref: () => Hotel, type: Hotel })
+  @Prop( { required: [true, 'Не указан отель'], ref: () => Hotel, type: mongoose.Types.ObjectId })
   hotelId: ObjectId;
 
-  @Prop( { required: [true, 'Не указана комната'], ref: () => HotelRoom, type: HotelRoom })
+  @Prop( { required: [true, 'Не указана комната'], ref: () => HotelRoom, type: mongoose.Types.ObjectId })
   roomId: ObjectId;
 
   @Prop( { required: [true, 'Не указана дата начала'] })

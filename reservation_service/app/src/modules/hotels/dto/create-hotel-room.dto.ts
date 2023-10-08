@@ -1,4 +1,4 @@
-import { IsArray, IsDefined, IsString } from "class-validator";
+import { IsDefined, IsString } from "class-validator";
 import { ObjectId } from "mongoose";
 
 export class CreateHotelRoomDto {
@@ -7,7 +7,4 @@ export class CreateHotelRoomDto {
 
   @IsString()
   description: string;
-
-  @IsArray()
-  images: any[]; // TODO File[]
 }

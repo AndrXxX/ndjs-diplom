@@ -37,10 +37,19 @@ export class HotelRoomsAdminController {
 
   @Roles(UserRoleEnum.admin)
   @Put('/:id')
-  async updateHotelRoom(@Param('id') id: ID, @Body(DtoValidationPipe) updateHotelRoomDto: UpdateHotelRoomDto) {
-    // TODO: Этот запрос предполагает загрузку файлов и должен использовать формат multipart/form-data.
-    // TODO: При обновлении может быть отправлен одновременно список ссылок на уже загруженные картинки и список файлов с новыми картинками.
-    // TODO: При использовании multer список загруженных файлов можно получить через @UploadedFiles(). Этот список нужно объединить со списком, который пришёл в body.
-    return this.hotelsRoomFormatter.format(await this.hotelsRoomService.update(id, updateHotelRoomDto as any)); // TODO
+  @UseInterceptors(ImagesFilesInterceptor())
+  async updateHotelRoom(
+    @Param('id') id: ID,
+    @Body(DtoValidationPipe) updateHotelRoomDto: UpdateHotelRoomDto,
+    @UploadedFiles(ImagesValidationPipe()) images: Array<Express.Multer.File>
+  ) {
+    const params: Partial<HotelRoom> = Object.assign({}, updateHotelRoomDto, {
+      hotel: updateHotelRoomDto.hotelId,
+      images: images.map(image => image.filename),
+    });
+    if (updateHotelRoomDto.images?.length) {
+      params.images.push(...updateHotelRoomDto.images);
+    }
+    return this.hotelsRoomFormatter.format(await this.hotelsRoomService.update(id, params));
   }
 }

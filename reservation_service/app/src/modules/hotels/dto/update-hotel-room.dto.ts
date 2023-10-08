@@ -1,18 +1,15 @@
-import { IsArray, IsBoolean, IsDate, IsDefined, IsString } from "class-validator";
+import { IsDefined, IsString } from "class-validator";
+import { ObjectId } from "mongoose";
 
 export class UpdateHotelRoomDto {
   @IsString()
   description: string;
 
-  @IsArray()
-  images: File[] | string[];
+  @IsDefined()
+  hotelId: ObjectId;
 
-  @IsDefined() @IsDate()
-  createdAt: Date;
-
-  @IsDefined() @IsDate()
-  updatedAt: Date;
-
-  @IsDefined() @IsBoolean()
+  @IsDefined()
   isEnabled: boolean;
+
+  images: string[];
 }

@@ -19,10 +19,10 @@ export class HotelRoom implements iHotelRoom {
   @Prop( { required: false, default: [] })
   images: string[];
 
-  @Prop( { required: [true, 'Не указана дата добавления'] })
+  @Prop( { required: [true, 'Не указана дата добавления'], default: new Date() })
   createdAt: Date;
 
-  @Prop( { required: [true, 'Не указана дата обновления'] })
+  @Prop( { required: [true, 'Не указана дата обновления'], default: new Date() })
   updatedAt: Date;
 
   @Prop( { required: true, default: true })

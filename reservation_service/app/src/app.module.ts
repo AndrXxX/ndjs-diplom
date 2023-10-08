@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { AppGateway } from "src/app.gateway";
+import { AppGateway } from "./app.gateway";
 import config from './config';
 import { AuthModule } from "./modules/auth/auth.module";
+import { DownloadModule } from "./modules/download/download.module";
 import { HotelsModule } from "./modules/hotels/hotels.module";
 import { ReservationsModule } from "./modules/reservations/reservations.module";
 import { SupportRequestModule } from "./modules/support-request/support-request.module";
@@ -15,6 +16,7 @@ const modules = [
   ReservationsModule,
   SupportRequestModule,
   UsersModule,
+  DownloadModule,
 ];
 
 @Module({

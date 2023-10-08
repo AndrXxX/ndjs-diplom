@@ -10,7 +10,7 @@ export type HotelRoomDocument = HydratedDocument<HotelRoom>;
 export class HotelRoom implements iHotelRoom {
   id: ID;
 
-  @Prop( { required: [true, 'Не указан отель'], ref: Hotel, type: mongoose.Types.ObjectId })
+  @Prop( { required: [true, 'Не указан отель'], ref: () => Hotel, type: mongoose.Types.ObjectId })
   hotel: ID;
 
   @Prop( { required: false })

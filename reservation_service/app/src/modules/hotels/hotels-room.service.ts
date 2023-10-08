@@ -30,7 +30,8 @@ export class HotelsRoomService implements IHotelsRoomService {
     }
 
     async update(id: ID, data: Partial<HotelRoom>): Promise<HotelRoomDocument | undefined> {
-        this.HotelRoomModel.updateOne({ id }, data);
-        return this.findById(id);
+        data.updatedAt = new Date();
+        await this.HotelRoomModel.findByIdAndUpdate(id, data);
+        return await this.findById(id);
     }
 }

@@ -15,10 +15,10 @@ export class Hotel implements iHotel {
   @Prop( { required: false })
   description: string;
 
-  @Prop( { required: [true, 'Не указана дата добавления'] })
+  @Prop( { required: [true, 'Не указана дата добавления'], default: new Date()})
   createdAt: Date;
 
-  @Prop( { required: [true, 'Не указана дата обновления'] })
+  @Prop( { required: [true, 'Не указана дата обновления'], default: new Date() })
   updatedAt: Date;
 }
 

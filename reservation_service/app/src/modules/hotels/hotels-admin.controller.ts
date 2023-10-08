@@ -22,8 +22,6 @@ export class HotelsAdminController {
   @Roles(UserRoleEnum.admin)
   @Post('/')
   async addHotel(@Body(DtoValidationPipe) createHotelDto: CreateHotelDto) {
-    createHotelDto.createdAt = new Date();
-    createHotelDto.updatedAt = new Date();
     return this.hotelsFormatter.format(await this.hotelsService.create(createHotelDto));
   }
 

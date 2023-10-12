@@ -29,7 +29,6 @@ export class HotelRoomsAdminController {
     @UploadedFiles(ImagesValidationPipe()) images: Array<Express.Multer.File>
   ) {
     const params: Partial<HotelRoom> = Object.assign({}, createHotelRoomDto, {
-      hotel: createHotelRoomDto.hotelId,
       images: images.map(image => image.filename),
     });
     return this.hotelsRoomFormatter.format(await this.hotelsRoomService.create(params));
@@ -44,7 +43,6 @@ export class HotelRoomsAdminController {
     @UploadedFiles(ImagesValidationPipe()) images: Array<Express.Multer.File>
   ) {
     const params: Partial<HotelRoom> = Object.assign({}, updateHotelRoomDto, {
-      hotel: updateHotelRoomDto.hotelId,
       images: images.map(image => image.filename),
     });
     if (updateHotelRoomDto.images?.length) {

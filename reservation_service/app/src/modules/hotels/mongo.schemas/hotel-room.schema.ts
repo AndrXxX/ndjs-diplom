@@ -10,8 +10,10 @@ export type HotelRoomDocument = HydratedDocument<HotelRoom>;
 export class HotelRoom implements iHotelRoom {
   id: ID;
 
-  @Prop( { required: [true, 'Не указан отель'], ref: () => Hotel, type: mongoose.Types.ObjectId })
-  hotel: ID;
+  @Prop( { required: [true, 'Не указан отель'], type: mongoose.Types.ObjectId })
+  hotelId: ID;
+
+  hotel: Hotel | null;
 
   @Prop( { required: false })
   description: string;
@@ -30,3 +32,10 @@ export class HotelRoom implements iHotelRoom {
 }
 
 export const HotelRoomSchema = SchemaFactory.createForClass(HotelRoom);
+
+HotelRoomSchema.virtual("hotel", {
+  ref: () => Hotel,
+  localField: "hotelId",
+  foreignField: "_id",
+  justOne: true
+});

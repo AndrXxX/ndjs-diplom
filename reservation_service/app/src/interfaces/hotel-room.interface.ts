@@ -1,7 +1,7 @@
 import { ID } from "src/types/ID";
 
 export interface iHotelRoom {
-  hotel: ID;
+  hotelId: ID;
   description: string;
   images: string[];
   createdAt: Date;

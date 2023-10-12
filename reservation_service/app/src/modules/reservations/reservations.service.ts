@@ -1,10 +1,10 @@
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { ID } from "src/types/ID";
+import { ReservationDto } from "./interfaces/reservation-dto.interface";
 import { ReservationSearchOptions } from "./interfaces/reservation-search-options.interface";
 import { IReservationService } from "./interfaces/reservation-service.interface";
-import { ReservationDto } from "./interfaces/reservation-dto.interface";
 import { Reservation, ReservationDocument } from "./mongo.schemas/reservation.schema";
 
 @Injectable()
@@ -15,7 +15,11 @@ export class ReservationsService implements IReservationService {
     ) {}
 
     public async addReservation(data: ReservationDto): Promise<ReservationDocument> {
-        // TODO: Метод IReservation.addReservation должен проверять, доступен ли номер на заданную дату.
+        const {userId, ...filter} = data;
+        const reservations = await this.getReservations(filter);
+        if (reservations.length) {
+            throw new BadRequestException('Dates are already reserved');
+        }
         const model = new this.ReservationModel(data);
         await model.save();
         return await this.findById(model.id);
@@ -27,10 +31,12 @@ export class ReservationsService implements IReservationService {
 
     public async getReservations(filter: ReservationSearchOptions): Promise<ReservationDocument[]> {
         const { userId, roomId } = filter;
-        const query = this.ReservationModel.find({ userId, roomId });
-        filter.dateStart && query.find({ dateStart: { $gte: filter.dateStart } });
-        filter.dateEnd && query.find({ dateEnd: { $lte: filter.dateStart } });
-        return await query.select('-__v').exec();
+        const parsedFilter: any = {};
+        userId && (parsedFilter.userId = userId);
+        roomId && (parsedFilter.roomId = roomId);
+        filter.dateStart && (parsedFilter.dateStart = { $gte: filter.dateStart });
+        filter.dateEnd && (parsedFilter.dateEnd = { $lte: filter.dateEnd });
+        return await this.ReservationModel.find(parsedFilter).select('-__v').exec();
     }
 
     public async findById(id: ID): Promise<ReservationDocument | undefined> {

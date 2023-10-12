@@ -27,7 +27,7 @@ export class ReservationsManagerController {
   async deleteReservation(@Param('id') id: ID, @Request() req: any) {
     const item = await this.reservationsService.findById(id);
     if (!item) {
-      throw new BadRequestException('Reservation is not exist');
+      throw new BadRequestException('Reservation does not exist');
     }
     return await this.reservationsService.removeReservation(id);
   }

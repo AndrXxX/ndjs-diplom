@@ -15,10 +15,11 @@ export class ReservationsFormatter {
     ) {}
 
     public format(reservation: Reservation) {
-        const { dateStart, dateEnd } = reservation;
+        const { id, dateStart, dateEnd } = reservation;
         const room: any | HotelRoom = isObject(reservation.roomId) ? reservation.roomId : {};
         const hotel: any | Hotel = isObject(room?.hotel) ? room.hotel : {};
         return {
+            id: id,
             startDate: dateStart,
             endDate: dateEnd,
             hotelRoom: this.hotelsRoomFormatter.formatForClient(room),

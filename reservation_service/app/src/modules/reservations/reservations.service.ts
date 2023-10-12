@@ -36,7 +36,10 @@ export class ReservationsService implements IReservationService {
         roomId && (parsedFilter.roomId = roomId);
         filter.dateStart && (parsedFilter.dateStart = { $gte: filter.dateStart });
         filter.dateEnd && (parsedFilter.dateEnd = { $lte: filter.dateEnd });
-        return await this.ReservationModel.find(parsedFilter).select('-__v').exec();
+        return await this.ReservationModel.find(parsedFilter).select('-__v').populate(['userId', {
+            path: 'roomId',
+            populate: { path: 'hotel' }
+        }]).exec();
     }
 
     public async findById(id: ID): Promise<ReservationDocument | undefined> {

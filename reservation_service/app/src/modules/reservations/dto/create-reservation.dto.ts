@@ -6,8 +6,8 @@ export class CreateReservationDto {
   hotelRoom: ID;
 
   @IsDefined() @IsDateString()
-  startDate: Date;
+  startDate: string;
 
   @IsDefined() @IsDateString()
-  endDate: Date;
+  endDate: string;
 }

@@ -36,8 +36,8 @@ export class ReservationsClientController {
     const item = await this.reservationsService.addReservation({
       userId: req.user.id,
       roomId: dto.hotelRoom,
-      dateStart: dto.startDate,
-      dateEnd: dto.endDate,
+      dateStart: new Date(dto.startDate),
+      dateEnd: new Date(dto.endDate),
     });
     return this.reservationsFormatter.format(item);
   }

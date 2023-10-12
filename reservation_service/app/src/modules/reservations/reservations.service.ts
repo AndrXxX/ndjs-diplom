@@ -21,15 +21,15 @@ export class ReservationsService implements IReservationService {
         return await this.findById(model.id);
     }
 
-    async removeReservation(id: ID): Promise<void> {
+    public async removeReservation(id: ID): Promise<void> {
         await this.ReservationModel.findByIdAndDelete(id).exec();
     }
 
-    async getReservations(filter: ReservationSearchOptions): Promise<ReservationDocument[]> {
+    public async getReservations(filter: ReservationSearchOptions): Promise<ReservationDocument[]> {
         return await this.ReservationModel.find(filter).select('-__v').exec();
     }
 
-    async findById(id: ID): Promise<ReservationDocument | undefined> {
+    public async findById(id: ID): Promise<ReservationDocument | undefined> {
         return await this.ReservationModel.findById(id).populate(['userId', {
             path: 'roomId',
             populate: { path: 'hotel' }

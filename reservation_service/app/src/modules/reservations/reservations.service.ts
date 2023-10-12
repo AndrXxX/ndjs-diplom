@@ -26,7 +26,11 @@ export class ReservationsService implements IReservationService {
     }
 
     public async getReservations(filter: ReservationSearchOptions): Promise<ReservationDocument[]> {
-        return await this.ReservationModel.find(filter).select('-__v').exec();
+        const { userId, roomId } = filter;
+        const query = this.ReservationModel.find({ userId, roomId });
+        filter.dateStart && query.find({ dateStart: { $gte: filter.dateStart } });
+        filter.dateEnd && query.find({ dateEnd: { $lte: filter.dateStart } });
+        return await query.select('-__v').exec();
     }
 
     public async findById(id: ID): Promise<ReservationDocument | undefined> {

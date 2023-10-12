@@ -36,11 +36,14 @@ export class UsersService implements IUserService {
     }
 
     async findAll(params: SearchUserParams): Promise<User[]> {
-        const { limit, offset, ...queryParams } = params;
+        const queryParams: any = {};
+        const { limit, offset } = params;
+        params.email && (queryParams.email = { $regex: `.*${params.email}.*` });
+        params.name && (queryParams.name = { $regex: `.*${params.name}.*` });
+        params.contactPhone && (queryParams.contactPhone = { $regex: `.*${params.contactPhone}.*` });
         const query = this.UserModel.find(queryParams);
         limit && query.limit(limit);
         offset && query.skip(offset);
         return await query.select('-__v').exec();
-        // TODO: При поиске IUserService.findAll() поля email, name и contactPhone должны проверяться на частичное совпадение.
     }
 }

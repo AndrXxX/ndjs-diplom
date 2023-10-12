@@ -33,6 +33,10 @@ export class ReservationsClientController {
   @Roles(UserRoleEnum.client)
   @Post("/")
   async addReservation(@Body(DtoValidationPipe) dto: CreateReservationDto, @Request() req: any) {
+    const room = await this.hotelsRoomService.findById(dto.hotelRoom);
+    if (!room || !room.isEnabled) {
+      throw new BadRequestException('Unavailable Room');
+    }
     const item = await this.reservationsService.addReservation({
       userId: req.user.id,
       roomId: dto.hotelRoom,

@@ -11,11 +11,15 @@ export type ReservationDocument = HydratedDocument<Reservation>;
 export class Reservation implements iReservation {
   id: ID;
 
-  @Prop( { required: [true, 'Не указан пользователь'], ref: () => User, type: mongoose.Types.ObjectId })
+  @Prop( { required: [true, 'Не указан пользователь'], type: mongoose.Types.ObjectId })
   userId: ObjectId;
 
-  @Prop( { required: [true, 'Не указана комната'], ref: () => HotelRoom, type: mongoose.Types.ObjectId })
+  user: User | null;
+
+  @Prop( { required: [true, 'Не указана комната'], type: mongoose.Types.ObjectId })
   roomId: ObjectId;
+
+  room: HotelRoom | null;
 
   @Prop( { required: [true, 'Не указана дата начала'] })
   dateStart: Date;
@@ -25,3 +29,15 @@ export class Reservation implements iReservation {
 }
 
 export const ReservationSchema = SchemaFactory.createForClass(Reservation);
+ReservationSchema.virtual("user", {
+  ref: () => User,
+  localField: "userId",
+  foreignField: "_id",
+  justOne: true
+});
+ReservationSchema.virtual("room", {
+  ref: () => HotelRoom,
+  localField: "roomId",
+  foreignField: "_id",
+  justOne: true
+});

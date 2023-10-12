@@ -36,15 +36,15 @@ export class ReservationsService implements IReservationService {
         roomId && (parsedFilter.roomId = roomId);
         filter.dateStart && (parsedFilter.dateStart = { $gte: filter.dateStart });
         filter.dateEnd && (parsedFilter.dateEnd = { $lte: filter.dateEnd });
-        return await this.ReservationModel.find(parsedFilter).select('-__v').populate(['userId', {
-            path: 'roomId',
+        return await this.ReservationModel.find(parsedFilter).select('-__v').populate(['user', {
+            path: 'room',
             populate: { path: 'hotel' }
         }]).exec();
     }
 
     public async findById(id: ID): Promise<ReservationDocument | undefined> {
-        return await this.ReservationModel.findById(id).populate(['userId', {
-            path: 'roomId',
+        return await this.ReservationModel.findById(id).populate(['user', {
+            path: 'room',
             populate: { path: 'hotel' }
         }]).select('-__v').exec();
     }

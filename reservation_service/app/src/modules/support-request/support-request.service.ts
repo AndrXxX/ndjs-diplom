@@ -6,8 +6,9 @@ import { ID } from "src/types/ID";
 import { GetChatListParams } from "./interfaces/get-chat-list-params.interface";
 import { SendMessage } from "./interfaces/send-message.interface";
 import { ISupportRequestService } from "./interfaces/support-request-service.interface";
-import { Message, MessageDocument } from "./mongo.schemas/message.schema";
+import { Message } from "./mongo.schemas/message.schema";
 import { SupportRequest, SupportRequestDocument } from "./mongo.schemas/support-request.schema";
+import { SupportRequestMessageService } from "./support-request-message.service";
 
 @Injectable()
 export class SupportRequestService implements ISupportRequestService {
@@ -16,7 +17,7 @@ export class SupportRequestService implements ISupportRequestService {
 
     constructor(
       @InjectModel(SupportRequest.name) private SupportRequestModel: Model<SupportRequestDocument>,
-      @InjectModel(Message.name) private MessageModel: Model<MessageDocument>,
+      private messageService: SupportRequestMessageService,
     ) {}
 
     public async findSupportRequests(params: GetChatListParams): Promise<SupportRequest[]> {
@@ -31,11 +32,7 @@ export class SupportRequestService implements ISupportRequestService {
     }
 
     public async sendMessage(request: SupportRequest, data: SendMessage): Promise<Message> {
-        const message = new this.MessageModel();
-        message.sentAt = new Date();
-        message.requestId = data.supportRequest;
-        message.text = data.text;
-        await message.save();
+        const message = await this.messageService.addMessage(data);
         request.messages.push(message);
         return message;
     }

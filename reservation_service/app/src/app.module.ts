@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { EventEmitterModule } from "@nestjs/event-emitter";
 import { MongooseModule } from '@nestjs/mongoose';
 import { AppGateway } from "./app.gateway";
 import config from './config';
@@ -17,6 +18,7 @@ const modules = [
   SupportRequestModule,
   UsersModule,
   DownloadModule,
+  EventEmitterModule.forRoot(),
 ];
 
 @Module({

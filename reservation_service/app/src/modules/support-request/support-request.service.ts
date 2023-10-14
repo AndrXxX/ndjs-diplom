@@ -1,5 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { isUndefined } from "@nestjs/common/utils/shared.utils";
+import { EventEmitter2 } from "@nestjs/event-emitter";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { ID } from "src/types/ID";
@@ -13,11 +14,10 @@ import { SupportRequestMessageService } from "./support-request-message.service"
 @Injectable()
 export class SupportRequestService implements ISupportRequestService {
 
-    // TODO: Оповещения должны быть реализованы через механизм EventEmitter.
-
     constructor(
       @InjectModel(SupportRequest.name) private SupportRequestModel: Model<SupportRequestDocument>,
       private messageService: SupportRequestMessageService,
+      private eventEmitter: EventEmitter2,
     ) {}
 
     public async findSupportRequests(params: GetChatListParams): Promise<SupportRequest[]> {
@@ -35,6 +35,7 @@ export class SupportRequestService implements ISupportRequestService {
         const message = await this.messageService.addMessage(data);
         request.messageIds.push(message.id);
         await request.save();
+        this.eventEmitter.emit("newMessage", { request, message });
         return message;
     }
 
@@ -42,9 +43,8 @@ export class SupportRequestService implements ISupportRequestService {
         return (await this.findById(supportRequest)).messages || [];
     }
 
-    public subscribe(handler: (supportRequest: SupportRequest, message: Message) => void): () => void {
-        // TODO:
-        return () => {};
+    public subscribe(handler: (supportRequest: SupportRequest, message: Message) => void): void {
+        this.eventEmitter.on('newMessage', params => handler(params.request, params.message));
     }
 
     public async findById(id: ID): Promise<SupportRequestDocument | undefined> {

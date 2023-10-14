@@ -11,8 +11,10 @@ export type SupportRequestDocument = HydratedDocument<SupportRequest>;
 export class SupportRequest implements iSupportRequest {
   id: ID;
 
-  @Prop( { required: [true, 'Не указан пользователь'], ref: () => User, type: mongoose.Types.ObjectId })
+  @Prop( { required: [true, 'Не указан пользователь'], type: mongoose.Types.ObjectId })
   userId: ObjectId;
+
+  user: User | null;
 
   @Prop( { required: [true, 'Не указана дата создания'] })
   createdAt: Date;
@@ -25,3 +27,9 @@ export class SupportRequest implements iSupportRequest {
 }
 
 export const SupportRequestSchema = SchemaFactory.createForClass(SupportRequest);
+SupportRequestSchema.virtual("user", {
+  ref: () => User,
+  localField: "userId",
+  foreignField: "_id",
+  justOne: true
+});

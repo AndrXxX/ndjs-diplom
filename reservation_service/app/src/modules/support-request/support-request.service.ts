@@ -54,7 +54,7 @@ export class SupportRequestService implements ISupportRequestService {
     private populateParams() {
         return [
             "user",
-            "messages",
+            { path: 'messages', populate: { path: 'author' } },
         ]
     }
 }

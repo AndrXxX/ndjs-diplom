@@ -3,6 +3,8 @@ import { isUndefined } from "@nestjs/common/utils/shared.utils";
 import { EventEmitter2 } from "@nestjs/event-emitter";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
+import { UserRoleEnum } from "src/enums/user-role.enum";
+import { User } from "src/modules/users/mongo.schemas/user.schema";
 import { ID } from "src/types/ID";
 import { GetChatListParams } from "./interfaces/get-chat-list-params.interface";
 import { SendMessage } from "./interfaces/send-message.interface";
@@ -49,6 +51,13 @@ export class SupportRequestService implements ISupportRequestService {
 
     public async findById(id: ID): Promise<SupportRequestDocument | undefined> {
         return await this.SupportRequestModel.findById(id).populate(this.populateParams()).select('-__v').exec();
+    }
+
+    public canAccessRequest(request: SupportRequest, user: User) {
+        if ([UserRoleEnum.client as string].includes(user.role) && request.userId !== user.id) {
+            return false;
+        }
+        return true;
     }
 
     private populateParams() {

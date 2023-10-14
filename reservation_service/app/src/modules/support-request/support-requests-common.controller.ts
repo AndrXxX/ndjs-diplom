@@ -81,7 +81,7 @@ export class SupportRequestsCommonController {
     if (!supportRequest) {
       throw new NotFoundException(`SupportRequest #${id} not found`);
     }
-    if ([UserRoleEnum.client as string].includes(user.role) && supportRequest.user !== user.id) {
+    if ([UserRoleEnum.client as string].includes(user.role) && supportRequest.userId !== user.id) {
       throw new ForbiddenException('You can not access to this support request');
     }
     return supportRequest;

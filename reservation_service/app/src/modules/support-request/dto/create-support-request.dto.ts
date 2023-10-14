@@ -6,5 +6,5 @@ export class CreateSupportRequestDto implements CreateSupportRequest {
   @IsDefined() @IsString()
   text: string;
 
-  user: ID;
+  userId: ID;
 }

@@ -22,7 +22,7 @@ export class SupportRequestsClientController {
   @Roles(UserRoleEnum.client)
   @Post("/")
   async addSupportRequest(@Body(DtoValidationPipe) dto: CreateSupportRequestDto, @Request() req: any) {
-    dto.user = req.user.id;
+    dto.userId = req.user.id;
     const item = await this.supportRequestClientService.createSupportRequest(dto);
     return this.supportRequestFormatter.formatForClient(item, (await this.supportRequestClientService.getUnreadCount(item.id)).length);
   }

@@ -12,7 +12,7 @@ export class SupportRequest implements iSupportRequest {
   id: ID;
 
   @Prop( { required: [true, 'Не указан пользователь'], ref: () => User, type: mongoose.Types.ObjectId })
-  user: ObjectId;
+  userId: ObjectId;
 
   @Prop( { required: [true, 'Не указана дата создания'] })
   createdAt: Date;

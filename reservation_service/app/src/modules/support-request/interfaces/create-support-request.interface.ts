@@ -1,6 +1,6 @@
 import { ID } from "src/types/ID";
 
 export interface CreateSupportRequest {
-  user: ID;
+  userId: ID;
   text: string;
 }

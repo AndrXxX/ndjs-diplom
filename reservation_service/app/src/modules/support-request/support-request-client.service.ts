@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
+import { UserRoleEnum } from "src/enums/user-role.enum";
 import { CreateSupportRequest } from "./interfaces/create-support-request.interface";
 import { ID } from "src/types/ID";
 import { MarkMessagesAsRead } from "./interfaces/mark-messages-as-read.interface";
@@ -37,10 +38,9 @@ export class SupportRequestClientService implements ISupportRequestClientService
     }
 
     public async getUnreadCount(supportRequest: ID): Promise<Message[]> {
-        // TODO: должен возвращать количество сообщений, которые были отправлены любым сотрудником поддержки и не отмечены прочитанным.
-        // TODO: Возможно проверять роль
         return (await this.findById(supportRequest))
           ?.messages
+          .filter(message => message.author?.role != UserRoleEnum.client)
           .filter(message => !message.readAt) || [];
     }
 

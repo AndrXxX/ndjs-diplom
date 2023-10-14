@@ -62,16 +62,16 @@ export class SupportRequestsCommonController {
     @Request() req: any,
     @Body(DtoValidationPipe) dto: MarkMessagesAsReadDto
   ) {
-    await this.getSupportRequest(id, req.user);
+    const request = await this.getSupportRequest(id, req.user);
     dto.supportRequest = id;
     dto.user = req.user.id;
     dto.createdBefore = new Date(dto.createdBefore);
     if ([UserRoleEnum.client as string].includes(req.user.role)) {
-      await this.clientService.markMessagesAsRead(dto);
+      await this.clientService.markMessagesAsRead(request, dto);
       return { success: true };
     }
     if ([UserRoleEnum.manager as string].includes(req.user.role)) {
-      await this.employeeService.markMessagesAsRead(dto);
+      await this.employeeService.markMessagesAsRead(request, dto);
       return { success: true };
     }
     throw new BadRequestException('Unknown user role');

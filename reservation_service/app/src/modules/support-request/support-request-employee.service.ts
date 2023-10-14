@@ -19,8 +19,8 @@ export class SupportRequestEmployeeService implements ISupportRequestEmployeeSer
       private requestService: SupportRequestService,
     ) {}
 
-    public async markMessagesAsRead(params: MarkMessagesAsRead) {
-        (await this.requestService.findById(params.supportRequest))?.messages
+    public async markMessagesAsRead(request: SupportRequest, params: MarkMessagesAsRead) {
+        request?.messages
           .filter(message => message.authorId == params.user)
           .filter(message => message.sentAt < params.createdBefore)
           .forEach(message => {

@@ -3,7 +3,7 @@ import mongoose, { HydratedDocument, ObjectId } from 'mongoose';
 import { iSupportRequest } from "src/interfaces/support-request.interface";
 import { User } from "src/modules/users/mongo.schemas/user.schema";
 import { ID } from "src/types/ID";
-import { MessageDocument } from "./message.schema";
+import { Message } from "./message.schema";
 
 export type SupportRequestDocument = HydratedDocument<SupportRequest>;
 
@@ -19,8 +19,7 @@ export class SupportRequest implements iSupportRequest {
   @Prop( { required: [true, 'Не указана дата создания'] })
   createdAt: Date;
 
-  @Prop( { required: false, default: [] })
-  messages: MessageDocument[];
+  messages: Message[] = [];
 
   @Prop( { required: false })
   isActive: boolean;
@@ -32,4 +31,10 @@ SupportRequestSchema.virtual("user", {
   localField: "userId",
   foreignField: "_id",
   justOne: true
+});
+SupportRequestSchema.virtual("messages", {
+  ref: () => Message,
+  localField: "_id",
+  foreignField: "requestId",
+  justOne: false
 });

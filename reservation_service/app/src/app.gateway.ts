@@ -8,6 +8,7 @@ import {
   WsException
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
+import { User } from "src/modules/users/mongo.schemas/user.schema";
 import { UserRoleEnum } from "./enums/user-role.enum";
 import { WsExceptionFilter } from "./filters/ws.exception.filter";
 import { Roles } from "./modules/auth/decorators/roles.decorator";
@@ -38,8 +39,11 @@ export class AppGateway {
     if (!payload?.chatId) {
       throw new WsException('payload.chatId is empty');
     }
+    const user: User = (client.request as any)?.user;
     return this.supportRequestService.subscribe((supportRequest, message) => {
-      client.emit('newMessage', this.supportMessageFormatter.format(message))
+      if (this.supportRequestService.canAccessRequest(supportRequest, user)) {
+        client.emit('newMessage', this.supportMessageFormatter.format(message));
+      }
     });
   }
 }

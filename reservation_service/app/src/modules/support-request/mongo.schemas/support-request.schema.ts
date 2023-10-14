@@ -21,7 +21,10 @@ export class SupportRequest implements iSupportRequest {
   @Prop( { required: [true, 'Не указана дата создания'] })
   createdAt: Date;
 
-  messages: MessageDocument[] = [];
+  @Prop( { default: [], type: [mongoose.Types.ObjectId] })
+  messageIds: ID[];
+
+  messages: MessageDocument[];
 
   @Prop( { required: false })
   isActive: boolean;
@@ -36,7 +39,7 @@ SupportRequestSchema.virtual("user", {
 });
 SupportRequestSchema.virtual("messages", {
   ref: () => Message,
-  localField: "_id",
-  foreignField: "requestId",
+  localField: "messageIds",
+  foreignField: "_id",
   justOne: false
 });

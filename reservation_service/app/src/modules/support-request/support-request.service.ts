@@ -31,9 +31,10 @@ export class SupportRequestService implements ISupportRequestService {
         return await query.populate(this.populateParams()).select('-__v').exec();
     }
 
-    public async sendMessage(request: SupportRequest, data: SendMessage): Promise<Message> {
+    public async sendMessage(request: SupportRequestDocument, data: SendMessage): Promise<Message> {
         const message = await this.messageService.addMessage(data);
-        request.messages.push(message);
+        request.messageIds.push(message.id);
+        await request.save();
         return message;
     }
 

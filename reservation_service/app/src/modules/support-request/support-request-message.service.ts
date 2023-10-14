@@ -14,7 +14,6 @@ export class SupportRequestMessageService {
     public async addMessage(data: SendMessage): Promise<MessageDocument> {
         let message = new this.MessageModel();
         message.sentAt = new Date();
-        message.requestId = data.supportRequest;
         message.text = data.text;
         message.authorId = data.authorId;
         await message.save();

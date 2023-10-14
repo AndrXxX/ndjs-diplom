@@ -11,7 +11,7 @@ export class Message implements iMessage {
   id: ID;
 
   @Prop( { required: [true, 'Не указан автор'], ref: () => User, type: mongoose.Types.ObjectId })
-  author: ObjectId;
+  authorId: ObjectId;
 
   @Prop( { required: [true, 'Не указана дата отправки'] })
   sentAt: Date;

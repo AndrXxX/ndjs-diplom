@@ -18,7 +18,7 @@ export class SupportRequestEmployeeService implements ISupportRequestEmployeeSer
 
     public async markMessagesAsRead(params: MarkMessagesAsRead) {
         (await this.findById(params.supportRequest))?.messages
-          .filter(message => message.author == params.user)
+          .filter(message => message.authorId == params.user)
           .filter(message => message.sentAt < params.createdBefore)
           .forEach(message => {
               message.readAt = new Date();

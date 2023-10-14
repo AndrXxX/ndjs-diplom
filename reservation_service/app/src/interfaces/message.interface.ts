@@ -1,7 +1,7 @@
 import { ObjectId } from "mongoose";
 
 export interface iMessage {
-  author: ObjectId;
+  authorId: ObjectId;
   sentAt: Date;
   text: string;
   readAt: Date;

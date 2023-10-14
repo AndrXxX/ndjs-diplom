@@ -7,7 +7,9 @@ import { SupportRequest } from "./support-request.schema";
 
 export type MessageDocument = HydratedDocument<Message>;
 
-@Schema()
+@Schema({
+  collection: "support_messages",
+})
 export class Message implements iMessage {
   id: ID;
 

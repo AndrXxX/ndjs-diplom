@@ -6,7 +6,9 @@ import { Hotel } from "./hotel.schema";
 
 export type HotelRoomDocument = HydratedDocument<HotelRoom>;
 
-@Schema()
+@Schema({
+  collection: "hotel_rooms",
+})
 export class HotelRoom implements iHotelRoom {
   id: ID;
 

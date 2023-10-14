@@ -32,11 +32,13 @@ export class SupportRequestsClientController {
   @Get("/")
   async supportRequestsList(@Request() req: any, @Query() query: GetChatListParams) {
     query.userId = req.user.id;
-    return from(await this.supportRequestService.findSupportRequests(query))
+    return from(this.supportRequestService.findSupportRequests(query))
+      .pipe(mergeAll())
       .pipe(map(async (item) => {
         const unreadCount = (await this.supportRequestClientService.getUnreadCount(item.id)).length;
         return this.supportRequestFormatter.formatForClient(item, unreadCount);
-      }), mergeAll())
+      }))
+      .pipe(mergeAll())
       .pipe(scan((acc, value) => [...acc, value], []));
   }
 }

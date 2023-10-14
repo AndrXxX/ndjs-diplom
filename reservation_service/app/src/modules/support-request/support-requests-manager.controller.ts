@@ -21,11 +21,13 @@ export class SupportRequestsManagerController {
   @Roles(UserRoleEnum.manager)
   @Get("/")
   async supportRequestsList(@Request() req: any, @Query() query: GetChatListParams) {
-    return from(await this.supportRequestService.findSupportRequests(query))
+    return from(this.supportRequestService.findSupportRequests(query))
+      .pipe(mergeAll())
       .pipe(map(async (item) => {
           const unreadCount = (await this.supportRequestEmployeeService.getUnreadCount(item.id)).length;
           return this.supportRequestFormatter.formatForManager(item, unreadCount);
-      }), mergeAll())
+      }))
+      .pipe(mergeAll())
       .pipe(scan((acc, value) => [...acc, value], []));
   }
 }

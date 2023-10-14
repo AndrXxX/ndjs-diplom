@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose, { HydratedDocument, ObjectId } from 'mongoose';
+import mongoose, { HydratedDocument } from 'mongoose';
 import { iSupportRequest } from "src/interfaces/support-request.interface";
 import { User } from "src/modules/users/mongo.schemas/user.schema";
 import { ID } from "src/types/ID";
@@ -12,7 +12,7 @@ export class SupportRequest implements iSupportRequest {
   id: ID;
 
   @Prop( { required: [true, 'Не указан пользователь'], type: mongoose.Types.ObjectId })
-  userId: ObjectId;
+  userId: ID;
 
   user: User | null;
 

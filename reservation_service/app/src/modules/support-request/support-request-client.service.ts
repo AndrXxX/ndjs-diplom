@@ -2,12 +2,13 @@ import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { UserRoleEnum } from "src/enums/user-role.enum";
-import { CreateSupportRequest } from "./interfaces/create-support-request.interface";
 import { ID } from "src/types/ID";
+import { CreateSupportRequest } from "./interfaces/create-support-request.interface";
 import { MarkMessagesAsRead } from "./interfaces/mark-messages-as-read.interface";
 import { ISupportRequestClientService } from "./interfaces/support-request-client-service.interface";
 import { Message } from "./mongo.schemas/message.schema";
 import { SupportRequest, SupportRequestDocument } from "./mongo.schemas/support-request.schema";
+import { SupportRequestService } from "./support-request.service";
 
 @Injectable()
 export class SupportRequestClientService implements ISupportRequestClientService {
@@ -16,6 +17,7 @@ export class SupportRequestClientService implements ISupportRequestClientService
 
     constructor(
       @InjectModel(SupportRequest.name) private SupportRequestModel: Model<SupportRequestDocument>,
+      private requestService: SupportRequestService,
     ) {}
 
     public async createSupportRequest(data: CreateSupportRequest): Promise<SupportRequest> {
@@ -28,7 +30,7 @@ export class SupportRequestClientService implements ISupportRequestClientService
     }
 
     public async markMessagesAsRead(params: MarkMessagesAsRead): Promise<void> {
-        (await this.findById(params.supportRequest))?.messages
+        (await this.requestService.findById(params.supportRequest))?.messages
           .filter(message => message.authorId != params.user)
           .filter(message => message.sentAt < params.createdBefore)
           .forEach(message => {
@@ -38,13 +40,9 @@ export class SupportRequestClientService implements ISupportRequestClientService
     }
 
     public async getUnreadCount(supportRequest: ID): Promise<Message[]> {
-        return (await this.findById(supportRequest))
+        return (await this.requestService.findById(supportRequest))
           ?.messages
           .filter(message => message.author?.role != UserRoleEnum.client)
           .filter(message => !message.readAt) || [];
-    }
-
-    private async findById(id: ID): Promise<SupportRequestDocument | undefined> {
-        return await this.SupportRequestModel.findById(id).select('-__v').exec();
     }
 }

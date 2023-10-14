@@ -7,6 +7,7 @@ import { MarkMessagesAsRead } from "./interfaces/mark-messages-as-read.interface
 import { ISupportRequestEmployeeService } from "./interfaces/support-request-employee-service.interface";
 import { Message } from "./mongo.schemas/message.schema";
 import { SupportRequest, SupportRequestDocument } from "./mongo.schemas/support-request.schema";
+import { SupportRequestService } from "./support-request.service";
 
 @Injectable()
 export class SupportRequestEmployeeService implements ISupportRequestEmployeeService {
@@ -15,10 +16,11 @@ export class SupportRequestEmployeeService implements ISupportRequestEmployeeSer
 
     constructor(
       @InjectModel(SupportRequest.name) private SupportRequestModel: Model<SupportRequestDocument>,
+      private requestService: SupportRequestService,
     ) {}
 
     public async markMessagesAsRead(params: MarkMessagesAsRead) {
-        (await this.findById(params.supportRequest))?.messages
+        (await this.requestService.findById(params.supportRequest))?.messages
           .filter(message => message.authorId == params.user)
           .filter(message => message.sentAt < params.createdBefore)
           .forEach(message => {
@@ -28,21 +30,17 @@ export class SupportRequestEmployeeService implements ISupportRequestEmployeeSer
     }
 
     public async getUnreadCount(supportRequest: ID): Promise<Message[]> {
-        return (await this.findById(supportRequest))
+        return (await this.requestService.findById(supportRequest))
           ?.messages
           .filter(message => message.author?.role == UserRoleEnum.client)
           .filter(message => !message.readAt) || [];
     }
 
     public async closeRequest(supportRequest: ID): Promise<void> {
-        const request = await this.findById(supportRequest);
+        const request = await this.requestService.findById(supportRequest);
         if (request) {
             request.isActive = false;
             await request.save();
         }
-    }
-
-    private async findById(id: ID): Promise<SupportRequestDocument | undefined> {
-        return await this.SupportRequestModel.findById(id).select('-__v').exec();
     }
 }

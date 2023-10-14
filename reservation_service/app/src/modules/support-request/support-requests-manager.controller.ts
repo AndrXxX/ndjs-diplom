@@ -20,7 +20,7 @@ export class SupportRequestsManagerController {
   @Roles(UserRoleEnum.manager)
   @Get("/")
   async supportRequestsList(@Request() req: any, @Query() query: GetChatListParams) {
-    query.user = req.user.id;
+    query.userId = req.user.id;
     const items = await this.supportRequestService.findSupportRequests(query);
     const counter = this.supportRequestEmployeeService.getUnreadCount;
     return Promise.all(items.map(async item => this.supportRequestFormatter.formatForClient(item, (await counter(item.id)).length)));

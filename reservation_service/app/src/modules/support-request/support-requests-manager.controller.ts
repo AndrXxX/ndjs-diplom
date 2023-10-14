@@ -1,4 +1,5 @@
 import { Controller, Get, Query, Request, UseGuards, } from '@nestjs/common';
+import { from, map, mergeAll, scan } from "rxjs";
 import { UserRoleEnum } from "src/enums/user-role.enum";
 import { Roles } from "../auth/decorators/roles.decorator";
 import { AuthenticatedGuard } from "../auth/guards/authenticated.guard";
@@ -20,9 +21,11 @@ export class SupportRequestsManagerController {
   @Roles(UserRoleEnum.manager)
   @Get("/")
   async supportRequestsList(@Request() req: any, @Query() query: GetChatListParams) {
-    const items = await this.supportRequestService.findSupportRequests(query);
-    return Promise.all(items.map(async item => {
-      return this.supportRequestFormatter.formatForClient(item, (await this.supportRequestEmployeeService.getUnreadCount(item.id)).length);
-    }));
+    return from(await this.supportRequestService.findSupportRequests(query))
+      .pipe(map(async (item) => {
+          const unreadCount = (await this.supportRequestEmployeeService.getUnreadCount(item.id)).length;
+          return this.supportRequestFormatter.formatForManager(item, unreadCount);
+      }), mergeAll())
+      .pipe(scan((acc, value) => [...acc, value], []));
   }
 }

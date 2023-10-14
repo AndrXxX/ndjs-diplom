@@ -31,11 +31,12 @@ export class SupportRequestService implements ISupportRequestService {
         if (!request) {
             throw new Error(`Unable to find supportRequest with id ${data.supportRequest}`)
         }
-        const message = new this.MessageModel(data);
+        const message = new this.MessageModel();
         message.sentAt = new Date();
+        message.requestId = data.supportRequest;
+        message.text = data.text;
         await message.save();
         request.messages.push(message);
-        await request.save();
         return message;
     }
 
@@ -49,6 +50,6 @@ export class SupportRequestService implements ISupportRequestService {
     }
 
     public async findById(id: ID): Promise<SupportRequestDocument | undefined> {
-        return await this.SupportRequestModel.findById(id).select('-__v').exec();
+        return await this.SupportRequestModel.findById(id).populate("user").populate("messages").select('-__v').exec();
     }
 }

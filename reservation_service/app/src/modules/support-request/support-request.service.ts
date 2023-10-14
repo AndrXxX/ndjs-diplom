@@ -27,7 +27,7 @@ export class SupportRequestService implements ISupportRequestService {
         const query = this.SupportRequestModel.find(queryParams);
         limit && query.limit(limit);
         offset && query.skip(offset);
-        return await query.select('-__v').exec();
+        return await query.populate(this.populateParams()).select('-__v').exec();
     }
 
     public async sendMessage(request: SupportRequest, data: SendMessage): Promise<Message> {
@@ -50,6 +50,13 @@ export class SupportRequestService implements ISupportRequestService {
     }
 
     public async findById(id: ID): Promise<SupportRequestDocument | undefined> {
-        return await this.SupportRequestModel.findById(id).populate("user").populate("messages").select('-__v').exec();
+        return await this.SupportRequestModel.findById(id).populate(this.populateParams()).select('-__v').exec();
+    }
+
+    private populateParams() {
+        return [
+            "user",
+            "messages",
+        ]
     }
 }

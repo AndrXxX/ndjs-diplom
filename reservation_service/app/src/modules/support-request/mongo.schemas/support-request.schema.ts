@@ -7,7 +7,9 @@ import { Message, MessageDocument } from "./message.schema";
 
 export type SupportRequestDocument = HydratedDocument<SupportRequest>;
 
-@Schema()
+@Schema({
+  collection: "support_requests",
+})
 export class SupportRequest implements iSupportRequest {
   id: ID;
 

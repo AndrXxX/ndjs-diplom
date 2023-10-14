@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Post, Query, Request, UseGuards, } from '@nestjs/common';
-import { from, map, mergeAll, scan } from "rxjs";
+import { defaultIfEmpty, from, map, mergeAll, scan } from "rxjs";
 import { UserRoleEnum } from "src/enums/user-role.enum";
 import { DtoValidationPipe } from "src/validators/dto.validation.pipe";
 import { Roles } from "../auth/decorators/roles.decorator";
@@ -39,6 +39,7 @@ export class SupportRequestsClientController {
         return this.supportRequestFormatter.formatForClient(item, unreadCount);
       }))
       .pipe(mergeAll())
-      .pipe(scan((acc, value) => [...acc, value], []));
+      .pipe(scan((acc, value) => [...acc, value], []))
+      .pipe(defaultIfEmpty([]));
   }
 }

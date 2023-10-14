@@ -16,7 +16,7 @@ export class SupportRequestMessageFormatter {
             createdAt: sentAt,
             text,
             readAt,
-            author: this.usersFormatter.format(item.authorId as any), // TODO: check
+            author: item.author ? this.usersFormatter.format(item.author) : null,
         };
     }
 }

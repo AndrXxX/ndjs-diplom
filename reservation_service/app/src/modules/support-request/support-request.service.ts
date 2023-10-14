@@ -1,4 +1,5 @@
 import { Injectable } from "@nestjs/common";
+import { isUndefined } from "@nestjs/common/utils/shared.utils";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { ID } from "src/types/ID";
@@ -19,7 +20,10 @@ export class SupportRequestService implements ISupportRequestService {
     ) {}
 
     public async findSupportRequests(params: GetChatListParams): Promise<SupportRequest[]> {
-        const { limit, offset, ...queryParams } = params;
+        const queryParams: Partial<SupportRequest> = {};
+        const { limit, offset } = params;
+        params.userId && (queryParams.userId = params.userId);
+        !isUndefined(params.isActive) && (queryParams.isActive = params.isActive);
         const query = this.SupportRequestModel.find(queryParams);
         limit && query.limit(limit);
         offset && query.skip(offset);

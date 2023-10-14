@@ -32,7 +32,8 @@ export class SupportRequestsClientController {
   async supportRequestsList(@Request() req: any, @Query() query: GetChatListParams) {
     query.userId = req.user.id;
     const items = await this.supportRequestService.findSupportRequests(query);
-    const counter = this.supportRequestClientService.getUnreadCount;
-    return Promise.all(items.map(async item => this.supportRequestFormatter.formatForClient(item, (await counter(item.id)).length)));
+    return Promise.all(items.map(async item => {
+      return this.supportRequestFormatter.formatForClient(item, (await this.supportRequestClientService.getUnreadCount(item.id)).length);
+    }));
   }
 }

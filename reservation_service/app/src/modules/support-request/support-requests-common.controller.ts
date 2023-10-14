@@ -82,7 +82,7 @@ export class SupportRequestsCommonController {
     if (!supportRequest) {
       throw new NotFoundException(`SupportRequest #${id} not found`);
     }
-    if (this.supportRequestService.canAccessRequest(supportRequest, user)) {
+    if (!this.supportRequestService.canAccessRequest(supportRequest, user)) {
       throw new ForbiddenException('You can not access to this support request');
     }
     return supportRequest;

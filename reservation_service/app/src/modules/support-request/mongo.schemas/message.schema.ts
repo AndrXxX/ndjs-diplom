@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose, { HydratedDocument, ObjectId } from 'mongoose';
+import mongoose, { HydratedDocument } from 'mongoose';
 import { iMessage } from "src/interfaces/message.interface";
 import { User } from "src/modules/users/mongo.schemas/user.schema";
 import { ID } from "src/types/ID";
@@ -12,12 +12,12 @@ export class Message implements iMessage {
   id: ID;
 
   @Prop( { required: [true, 'Не указан автор'], type: mongoose.Types.ObjectId })
-  authorId: ObjectId;
+  authorId: ID;
 
   author: User | null;
 
   @Prop( { required: [true, 'Не указан запрос'], type: mongoose.Types.ObjectId })
-  requestId: ObjectId;
+  requestId: ID;
 
   request: SupportRequest | null;
 

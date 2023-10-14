@@ -1,8 +1,8 @@
-import { ObjectId } from "mongoose";
+import { ID } from "src/types/ID";
 
 export interface iMessage {
-  authorId: ObjectId;
-  requestId: ObjectId;
+  authorId: ID;
+  requestId: ID;
   sentAt: Date;
   text: string;
   readAt: Date;

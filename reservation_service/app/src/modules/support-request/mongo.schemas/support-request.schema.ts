@@ -3,7 +3,7 @@ import mongoose, { HydratedDocument } from 'mongoose';
 import { iSupportRequest } from "src/interfaces/support-request.interface";
 import { User } from "src/modules/users/mongo.schemas/user.schema";
 import { ID } from "src/types/ID";
-import { Message } from "./message.schema";
+import { Message, MessageDocument } from "./message.schema";
 
 export type SupportRequestDocument = HydratedDocument<SupportRequest>;
 
@@ -19,7 +19,7 @@ export class SupportRequest implements iSupportRequest {
   @Prop( { required: [true, 'Не указана дата создания'] })
   createdAt: Date;
 
-  messages: Message[] = [];
+  messages: MessageDocument[] = [];
 
   @Prop( { required: false })
   isActive: boolean;

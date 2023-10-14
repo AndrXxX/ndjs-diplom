@@ -6,6 +6,6 @@ export class CreateSupportRequestDto implements SendMessage {
   @IsDefined() @IsString()
   text: string;
 
-  author: ID;
+  authorId: ID;
   supportRequest: ID;
 }

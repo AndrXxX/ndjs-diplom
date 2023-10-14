@@ -50,7 +50,7 @@ export class SupportRequestsCommonController {
   ) {
     const request = await this.getSupportRequest(id, req.user);
     dto.supportRequest = id;
-    dto.author = req.user.id;
+    dto.authorId = req.user.id;
     const message = await this.supportRequestService.sendMessage(request, dto)
     return this.messageFormatter.format(message);
   }

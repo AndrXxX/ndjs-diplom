@@ -65,6 +65,7 @@ export class SupportRequestsCommonController {
     await this.getSupportRequest(id, req.user);
     dto.supportRequest = id;
     dto.user = req.user.id;
+    dto.createdBefore = new Date(dto.createdBefore);
     if ([UserRoleEnum.client as string].includes(req.user.role)) {
       await this.clientService.markMessagesAsRead(dto);
       return { success: true };

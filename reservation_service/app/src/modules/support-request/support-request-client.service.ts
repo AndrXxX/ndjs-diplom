@@ -24,8 +24,12 @@ export class SupportRequestClientService implements ISupportRequestClientService
         const model = new this.SupportRequestModel(data);
         model.createdAt = new Date();
         model.isActive = true;
-        // model.messages.push() // TODO add message
         await model.save();
+        await this.requestService.sendMessage(model, {
+            authorId: model.userId,
+            supportRequest: model.id,
+            text: data.text,
+        })
         return model;
     }
 

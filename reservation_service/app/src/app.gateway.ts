@@ -1,5 +1,12 @@
-import { BadRequestException, UseFilters, UseGuards } from "@nestjs/common";
-import { ConnectedSocket, MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
+import { UseFilters, UseGuards } from "@nestjs/common";
+import {
+  ConnectedSocket,
+  MessageBody,
+  SubscribeMessage,
+  WebSocketGateway,
+  WebSocketServer,
+  WsException
+} from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { UserRoleEnum } from "./enums/user-role.enum";
 import { WsExceptionFilter } from "./filters/ws.exception.filter";
@@ -25,11 +32,11 @@ export class AppGateway {
   @Roles(UserRoleEnum.manager, UserRoleEnum.client)
   @SubscribeMessage('subscribeToChat')
   async subscribeToChat(
-    @MessageBody("payload") dto: { payload: { chatId: ID} },
+    @MessageBody("payload") payload: { chatId: ID },
     @ConnectedSocket() client: Socket,
   ) {
-    if (!dto.payload.chatId) {
-      throw new BadRequestException('payload.chatId is empty');
+    if (!payload?.chatId) {
+      throw new WsException('payload.chatId is empty');
     }
     return this.supportRequestService.subscribe((supportRequest, message) => {
       client.emit('newMessage', this.supportMessageFormatter.format(message))

@@ -6,6 +6,7 @@ import { UsersModule } from "../users/users.module";
 import { Message, MessageSchema } from "./mongo.schemas/message.schema";
 import { SupportRequest, SupportRequestSchema } from "./mongo.schemas/support-request.schema";
 import { SupportRequestMessageFormatter } from "./support-request-message.formatter";
+import { SupportRequestMessageService } from "./support-request-message.service";
 import { SupportRequestFormatter } from "./support-request.formatter";
 import { SupportRequestService } from "./support-request.service";
 import { SupportRequestsClientController } from "./support-requests-client.controller";
@@ -20,8 +21,8 @@ import { SupportRequestsManagerController } from "./support-requests-manager.con
     ]),
     UsersModule,
   ],
-  providers: [SupportRequestService, SupportRequestFormatter, SupportRequestMessageFormatter, SupportRequestClientService, SupportRequestEmployeeService],
-  exports: [SupportRequestService, SupportRequestFormatter, SupportRequestMessageFormatter],
+  providers: [SupportRequestService, SupportRequestMessageService, SupportRequestFormatter, SupportRequestMessageFormatter, SupportRequestClientService, SupportRequestEmployeeService],
+  exports: [SupportRequestService, SupportRequestMessageService, SupportRequestFormatter, SupportRequestMessageFormatter],
   controllers: [SupportRequestsClientController, SupportRequestsManagerController, SupportRequestsCommonController],
 })
 export class SupportRequestModule {}

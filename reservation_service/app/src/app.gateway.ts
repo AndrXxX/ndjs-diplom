@@ -4,15 +4,14 @@ import { Server, Socket } from 'socket.io';
 import { UserRoleEnum } from "./enums/user-role.enum";
 import { WsExceptionFilter } from "./filters/ws.exception.filter";
 import { Roles } from "./modules/auth/decorators/roles.decorator";
-import { AuthenticatedGuard } from "./modules/auth/guards/authenticated.guard";
 import { RolesGuard } from "./modules/auth/guards/roles.guard";
+import { WsAuthenticatedGuard } from "./modules/auth/guards/ws.authenticated.guard";
 import { SupportRequestMessageFormatter } from "./modules/support-request/support-request-message.formatter";
 import { SupportRequestService } from "./modules/support-request/support-request.service";
 import { ID } from "./types/ID";
 
 @UseFilters(new WsExceptionFilter)
-@UseGuards(AuthenticatedGuard, RolesGuard)
-@WebSocketGateway({ cors: true })
+@WebSocketGateway({ cors: true, credentials: true, })
 export class AppGateway {
   constructor(
     private readonly supportRequestService: SupportRequestService,
@@ -22,6 +21,7 @@ export class AppGateway {
   @WebSocketServer()
   server: Server;
 
+  @UseGuards(WsAuthenticatedGuard, RolesGuard)
   @Roles(UserRoleEnum.manager, UserRoleEnum.client)
   @SubscribeMessage('subscribeToChat')
   async subscribeToChat(

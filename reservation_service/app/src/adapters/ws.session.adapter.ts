@@ -1,3 +1,4 @@
+import { INestApplicationContext } from "@nestjs/common";
 import { IoAdapter } from "@nestjs/platform-socket.io";
 import express from "express";
 import * as passport from "passport"
@@ -6,7 +7,7 @@ import { Server, ServerOptions } from "socket.io";
 export class WsSessionAdapter extends IoAdapter {
   private readonly session: express.RequestHandler;
 
-  constructor(session: express.RequestHandler, app: any) {
+  constructor(session: express.RequestHandler, app: INestApplicationContext) {
     super(app);
     this.session = session;
   }

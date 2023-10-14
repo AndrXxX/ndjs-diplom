@@ -10,8 +10,10 @@ export type MessageDocument = HydratedDocument<Message>;
 export class Message implements iMessage {
   id: ID;
 
-  @Prop( { required: [true, 'Не указан автор'], ref: () => User, type: mongoose.Types.ObjectId })
+  @Prop( { required: [true, 'Не указан автор'], type: mongoose.Types.ObjectId })
   authorId: ObjectId;
+
+  author: User | null;
 
   @Prop( { required: [true, 'Не указана дата отправки'] })
   sentAt: Date;
@@ -24,3 +26,9 @@ export class Message implements iMessage {
 }
 
 export const MessageSchema = SchemaFactory.createForClass(Message);
+MessageSchema.virtual("author", {
+  ref: () => User,
+  localField: "authorId",
+  foreignField: "_id",
+  justOne: true
+});

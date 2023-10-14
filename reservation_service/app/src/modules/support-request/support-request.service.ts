@@ -26,11 +26,7 @@ export class SupportRequestService implements ISupportRequestService {
         return await query.select('-__v').exec();
     }
 
-    public async sendMessage(data: SendMessage): Promise<Message> {
-        const request = await this.findById(data.supportRequest);
-        if (!request) {
-            throw new Error(`Unable to find supportRequest with id ${data.supportRequest}`)
-        }
+    public async sendMessage(request: SupportRequest, data: SendMessage): Promise<Message> {
         const message = new this.MessageModel();
         message.sentAt = new Date();
         message.requestId = data.supportRequest;

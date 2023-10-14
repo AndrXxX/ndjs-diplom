@@ -48,10 +48,10 @@ export class SupportRequestsCommonController {
     @Request() req: any,
     @Body(DtoValidationPipe) dto: CreateSupportRequestDto
   ) {
-    await this.getSupportRequest(id, req.user);
+    const request = await this.getSupportRequest(id, req.user);
     dto.supportRequest = id;
     dto.author = req.user.id;
-    const message = await this.supportRequestService.sendMessage(dto)
+    const message = await this.supportRequestService.sendMessage(request, dto)
     return this.messageFormatter.format(message);
   }
 

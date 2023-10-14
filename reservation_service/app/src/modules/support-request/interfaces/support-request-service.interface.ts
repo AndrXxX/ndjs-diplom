@@ -6,7 +6,7 @@ import { SendMessage } from "./send-message.interface";
 
 export interface ISupportRequestService {
   findSupportRequests(params: GetChatListParams): Promise<SupportRequest[]>;
-  sendMessage(data: SendMessage): Promise<Message>;
+  sendMessage(request: SupportRequest, data: SendMessage): Promise<Message>;
   getMessages(supportRequest: ID): Promise<Message[]>;
   subscribe(
     handler: (supportRequest: SupportRequest, message: Message) => void

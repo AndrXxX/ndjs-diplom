@@ -35,6 +35,7 @@ export class SupportRequestClientService implements ISupportRequestClientService
 
     public async markMessagesAsRead(request: SupportRequest, params: MarkMessagesAsRead): Promise<void> {
         request?.messages
+          .filter(message => !message.readAt)
           .filter(message => message.authorId != params.user)
           .filter(message => message.sentAt < params.createdBefore)
           .forEach(message => {

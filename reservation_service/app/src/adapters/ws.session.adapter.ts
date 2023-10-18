@@ -16,11 +16,6 @@ export class WsSessionAdapter extends IoAdapter {
     const server: Server = super.create(port, options);
 
     const wrap = (middleware: any) => (socket: any, next: any) => middleware(socket.request, {}, next);
-
-    server.use((socket, next) => {
-      socket.data.username = 'test'; //passing random property to see if use method is working
-      next();
-    });
     server.use(wrap(this.session));
     server.use(wrap(passport.initialize()));
     server.use(wrap(passport.session()));

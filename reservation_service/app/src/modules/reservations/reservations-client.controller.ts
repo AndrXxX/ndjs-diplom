@@ -9,7 +9,7 @@ import {
   Post,
   Request,
   UseGuards,
-} from '@nestjs/common';
+} from "@nestjs/common";
 import { UserRoleEnum } from "src/enums/user-role.enum";
 import { ID } from "src/types/ID";
 import { DtoValidationPipe } from "src/validators/dto.validation.pipe";
@@ -22,7 +22,7 @@ import { ReservationsFormatter } from "./reservations.formatter";
 import { ReservationsService } from "./reservations.service";
 
 @UseGuards(AuthenticatedGuard, RolesGuard)
-@Controller('/api/client/reservations')
+@Controller("/api/client/reservations")
 export class ReservationsClientController {
   constructor(
     private reservationsService: ReservationsService,
@@ -32,10 +32,13 @@ export class ReservationsClientController {
 
   @Roles(UserRoleEnum.client)
   @Post("/")
-  async addReservation(@Body(DtoValidationPipe) dto: CreateReservationDto, @Request() req: any) {
+  async addReservation(
+    @Body(DtoValidationPipe) dto: CreateReservationDto,
+    @Request() req: any,
+  ) {
     const room = await this.hotelsRoomService.findById(dto.hotelRoom);
     if (!room || !room.isEnabled) {
-      throw new BadRequestException('Unavailable Room');
+      throw new BadRequestException("Unavailable Room");
     }
     const item = await this.reservationsService.addReservation({
       userId: req.user.id,
@@ -49,19 +52,21 @@ export class ReservationsClientController {
   @Roles(UserRoleEnum.client)
   @Get("/")
   async reservationsList(@Request() req: any) {
-    const items = await this.reservationsService.getReservations({ userId: req.user.id });
-    return items.map(item => this.reservationsFormatter.format(item));
+    const items = await this.reservationsService.getReservations({
+      userId: req.user.id,
+    });
+    return items.map((item) => this.reservationsFormatter.format(item));
   }
 
   @Roles(UserRoleEnum.client)
-  @Delete('/:id')
-  async deleteReservation(@Param('id') id: ID, @Request() req: any) {
+  @Delete("/:id")
+  async deleteReservation(@Param("id") id: ID, @Request() req: any) {
     const item = await this.reservationsService.findById(id);
     if (!item) {
-      throw new BadRequestException('Reservation does not exist');
+      throw new BadRequestException("Reservation does not exist");
     }
     if (item.userId !== req.user.id) {
-      throw new ForbiddenException('You can not delete reservation');
+      throw new ForbiddenException("You can not delete reservation");
     }
     return await this.reservationsService.removeReservation(id);
   }

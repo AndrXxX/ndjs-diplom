@@ -25,7 +25,7 @@ import { SupportRequestMessageFormatter } from "./support-request-message.format
 import { SupportRequestService } from "./support-request.service";
 
 @UseGuards(AuthenticatedGuard, RolesGuard)
-@Controller("/api/common/support-requests")
+@Controller("/common/support-requests")
 export class SupportRequestsCommonController {
   constructor(
     private messageFormatter: SupportRequestMessageFormatter,

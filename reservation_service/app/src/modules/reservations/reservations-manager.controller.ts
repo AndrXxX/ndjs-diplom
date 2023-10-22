@@ -15,7 +15,7 @@ import { ReservationsFormatter } from "./reservations.formatter";
 import { ReservationsService } from "./reservations.service";
 
 @UseGuards(AuthenticatedGuard, RolesGuard)
-@Controller("/api/manager/reservations")
+@Controller("/manager/reservations")
 export class ReservationsManagerController {
   constructor(
     private reservationsService: ReservationsService,

@@ -21,7 +21,7 @@ import { HotelsService } from "./hotels.service";
 import { SearchHotelParams } from "./interfaces/search-hotel-params.interface";
 
 @UseGuards(AuthenticatedGuard, RolesGuard)
-@Controller("/api/admin/hotels")
+@Controller("/admin/hotels")
 export class HotelsAdminController {
   constructor(
     private hotelsService: HotelsService,

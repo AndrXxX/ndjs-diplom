@@ -22,7 +22,7 @@ import { ReservationsFormatter } from "./reservations.formatter";
 import { ReservationsService } from "./reservations.service";
 
 @UseGuards(AuthenticatedGuard, RolesGuard)
-@Controller("/api/client/reservations")
+@Controller("/client/reservations")
 export class ReservationsClientController {
   constructor(
     private reservationsService: ReservationsService,

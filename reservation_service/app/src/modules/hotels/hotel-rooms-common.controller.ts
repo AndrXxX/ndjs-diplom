@@ -5,7 +5,7 @@ import { HotelsRoomFormatter } from "./hotels-room.formatter";
 import { HotelsRoomService } from "./hotels-room.service";
 import { SearchRoomsParams } from "./interfaces/search-rooms-params.interface";
 
-@Controller("/api/common/hotel-rooms")
+@Controller("/common/hotel-rooms")
 export class HotelRoomsCommonController {
   constructor(
     private hotelsRoomService: HotelsRoomService,

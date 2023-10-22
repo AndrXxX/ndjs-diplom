@@ -5,7 +5,7 @@ import { UsersFormatter } from "../users/users.formatter";
 import { UsersService } from "../users/users.service";
 import { ClientRegisterDto } from "./dto/client-register.dto";
 
-@Controller("/api/client")
+@Controller("/client")
 export class ClientController {
   constructor(
     private usersService: UsersService,

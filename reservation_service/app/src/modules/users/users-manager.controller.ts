@@ -8,7 +8,7 @@ import { UsersService } from "../users/users.service";
 import { SearchUserParams } from "./interfaces/search-user-params.interface";
 
 @UseGuards(AuthenticatedGuard, RolesGuard)
-@Controller("/api/manager/users")
+@Controller("/manager/users")
 export class UsersManagerController {
   constructor(
     private usersService: UsersService,

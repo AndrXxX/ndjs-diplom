@@ -14,6 +14,7 @@ async function bootstrap() {
   app.use(passport.initialize());
   app.use(passport.session());
 
+  app.setGlobalPrefix("api");
   app.useWebSocketAdapter(new WsSessionAdapter(sessionMiddleware, app));
 
   await app.listen(config.port);

@@ -23,7 +23,7 @@ import { HotelsRoomFormatter } from "./hotels-room.formatter";
 import { HotelsRoomService } from "./hotels-room.service";
 
 @UseGuards(AuthenticatedGuard, RolesGuard)
-@Controller("/api/admin/hotel-rooms")
+@Controller("/admin/hotel-rooms")
 export class HotelRoomsAdminController {
   constructor(
     private hotelsRoomService: HotelsRoomService,

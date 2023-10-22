@@ -4,7 +4,7 @@ import { LocalAuthGuard } from "../auth/guards/local.auth.guard";
 import { NotAuthenticatedGuard } from "../auth/guards/not-authenticated.guard";
 import { UsersFormatter } from "../users/users.formatter";
 
-@Controller("/api/auth")
+@Controller("/auth")
 export class AuthController {
   constructor(private usersFormatter: UsersFormatter) {}
 

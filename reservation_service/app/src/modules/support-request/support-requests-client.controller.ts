@@ -20,7 +20,7 @@ import { SupportRequestFormatter } from "./support-request.formatter";
 import { SupportRequestService } from "./support-request.service";
 
 @UseGuards(AuthenticatedGuard, RolesGuard)
-@Controller("/api/client/support-requests")
+@Controller("/client/support-requests")
 export class SupportRequestsClientController {
   constructor(
     private supportRequestClientService: SupportRequestClientService,

@@ -1,4 +1,4 @@
-import { Controller, Get, Query, Request, UseGuards, } from '@nestjs/common';
+import { Controller, Get, Query, Request, UseGuards } from "@nestjs/common";
 import { defaultIfEmpty, from, map, mergeAll, scan } from "rxjs";
 import { UserRoleEnum } from "src/enums/user-role.enum";
 import { Roles } from "../auth/decorators/roles.decorator";
@@ -10,7 +10,7 @@ import { SupportRequestFormatter } from "./support-request.formatter";
 import { SupportRequestService } from "./support-request.service";
 
 @UseGuards(AuthenticatedGuard, RolesGuard)
-@Controller('/api/manager/support-requests')
+@Controller("/api/manager/support-requests")
 export class SupportRequestsManagerController {
   constructor(
     private supportRequestEmployeeService: SupportRequestEmployeeService,
@@ -20,13 +20,23 @@ export class SupportRequestsManagerController {
 
   @Roles(UserRoleEnum.manager)
   @Get("/")
-  async supportRequestsList(@Request() req: any, @Query() query: GetChatListParams) {
+  async supportRequestsList(
+    @Request() req: any,
+    @Query() query: GetChatListParams,
+  ) {
     return from(this.supportRequestService.findSupportRequests(query))
       .pipe(mergeAll())
-      .pipe(map(async (item) => {
-          const unreadCount = (await this.supportRequestEmployeeService.getUnreadCount(item.id)).length;
-          return this.supportRequestFormatter.formatForManager(item, unreadCount);
-      }))
+      .pipe(
+        map(async (item) => {
+          const unreadCount = (
+            await this.supportRequestEmployeeService.getUnreadCount(item.id)
+          ).length;
+          return this.supportRequestFormatter.formatForManager(
+            item,
+            unreadCount,
+          );
+        }),
+      )
       .pipe(mergeAll())
       .pipe(scan((acc, value) => [...acc, value], []))
       .pipe(defaultIfEmpty([]));

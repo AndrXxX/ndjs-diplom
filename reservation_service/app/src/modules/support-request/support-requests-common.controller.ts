@@ -9,7 +9,7 @@ import {
   Post,
   Request,
   UseGuards,
-} from '@nestjs/common';
+} from "@nestjs/common";
 import { UserRoleEnum } from "src/enums/user-role.enum";
 import { User } from "src/modules/users/mongo.schemas/user.schema";
 import { ID } from "src/types/ID";
@@ -25,7 +25,7 @@ import { SupportRequestMessageFormatter } from "./support-request-message.format
 import { SupportRequestService } from "./support-request.service";
 
 @UseGuards(AuthenticatedGuard, RolesGuard)
-@Controller('/api/common/support-requests')
+@Controller("/api/common/support-requests")
 export class SupportRequestsCommonController {
   constructor(
     private messageFormatter: SupportRequestMessageFormatter,
@@ -36,31 +36,33 @@ export class SupportRequestsCommonController {
 
   @Roles(UserRoleEnum.manager, UserRoleEnum.client)
   @Get("/:id/messages")
-  async messages(@Param('id') id: ID, @Request() req: any) {
+  async messages(@Param("id") id: ID, @Request() req: any) {
     const supportRequest = await this.getSupportRequest(id, req.user);
-    return supportRequest.messages.map(item => this.messageFormatter.format(item));
+    return supportRequest.messages.map((item) =>
+      this.messageFormatter.format(item),
+    );
   }
 
   @Roles(UserRoleEnum.manager, UserRoleEnum.client)
   @Post("/:id/messages")
   async sendMessage(
-    @Param('id') id: ID,
+    @Param("id") id: ID,
     @Request() req: any,
-    @Body(DtoValidationPipe) dto: CreateSupportRequestDto
+    @Body(DtoValidationPipe) dto: CreateSupportRequestDto,
   ) {
     const request = await this.getSupportRequest(id, req.user);
     dto.supportRequest = id;
     dto.authorId = req.user.id;
-    const message = await this.supportRequestService.sendMessage(request, dto)
+    const message = await this.supportRequestService.sendMessage(request, dto);
     return this.messageFormatter.format(message);
   }
 
   @Roles(UserRoleEnum.manager, UserRoleEnum.client)
   @Post("/:id/messages/read")
   async setMessageRead(
-    @Param('id') id: ID,
+    @Param("id") id: ID,
     @Request() req: any,
-    @Body(DtoValidationPipe) dto: MarkMessagesAsReadDto
+    @Body(DtoValidationPipe) dto: MarkMessagesAsReadDto,
   ) {
     const request = await this.getSupportRequest(id, req.user);
     dto.supportRequest = id;
@@ -74,7 +76,7 @@ export class SupportRequestsCommonController {
       await this.employeeService.markMessagesAsRead(request, dto);
       return { success: true };
     }
-    throw new BadRequestException('Unknown user role');
+    throw new BadRequestException("Unknown user role");
   }
 
   private async getSupportRequest(id: ID, user: User) {
@@ -83,7 +85,9 @@ export class SupportRequestsCommonController {
       throw new NotFoundException(`SupportRequest #${id} not found`);
     }
     if (!this.supportRequestService.canAccessRequest(supportRequest, user)) {
-      throw new ForbiddenException('You can not access to this support request');
+      throw new ForbiddenException(
+        "You can not access to this support request",
+      );
     }
     return supportRequest;
   }

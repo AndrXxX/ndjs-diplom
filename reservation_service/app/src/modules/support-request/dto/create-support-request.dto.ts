@@ -3,7 +3,8 @@ import { ID } from "src/types/ID";
 import { CreateSupportRequest } from "../interfaces/create-support-request.interface";
 
 export class CreateSupportRequestDto implements CreateSupportRequest {
-  @IsDefined() @IsString()
+  @IsDefined()
+  @IsString()
   text: string;
 
   userId: ID;

@@ -3,8 +3,8 @@ import {
   ParseFilePipe,
   ParseFilePipeBuilder,
 } from "@nestjs/common";
-import { MaxSizeFileValidator } from "src/validators/max-size-file.validator";
 import config from "src/config";
+import { MaxSizeFileValidator } from "src/validators/max-size-file.validator";
 
 export function ImagesValidationPipe(): ParseFilePipe {
   return new ParseFilePipeBuilder()

@@ -1,4 +1,8 @@
-import { HttpStatus, ParseFilePipe, ParseFilePipeBuilder } from '@nestjs/common';
+import {
+  HttpStatus,
+  ParseFilePipe,
+  ParseFilePipeBuilder,
+} from "@nestjs/common";
 import { MaxSizeFileValidator } from "src/validators/max-size-file.validator";
 import config from "src/config";
 
@@ -9,10 +13,10 @@ export function ImagesValidationPipe(): ParseFilePipe {
     })
     .addValidator(
       new MaxSizeFileValidator({
-        maxSize: config.maxUploadSize
+        maxSize: config.maxUploadSize,
       }),
     )
     .build({
-      errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY
-    })
+      errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+    });
 }

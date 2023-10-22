@@ -1,11 +1,10 @@
 import { Injectable } from "@nestjs/common";
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from "bcrypt";
 
 const saltRounds = 10;
 
 @Injectable()
 export class GenerateHashService {
-
   isValid(password, hash) {
     return bcrypt.compareSync(password, hash);
   }

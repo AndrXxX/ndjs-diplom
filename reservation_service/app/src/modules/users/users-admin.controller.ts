@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, UseGuards } from "@nestjs/common";
 import { UserRoleEnum } from "src/enums/user-role.enum";
 import { DtoValidationPipe } from "src/validators/dto.validation.pipe";
 import { Roles } from "../auth/decorators/roles.decorator";
@@ -10,7 +10,7 @@ import { UsersService } from "../users/users.service";
 import { SearchUserParams } from "./interfaces/search-user-params.interface";
 
 @UseGuards(AuthenticatedGuard, RolesGuard)
-@Controller('/api/admin/users')
+@Controller("/admin/users")
 export class UsersAdminController {
   constructor(
     private usersService: UsersService,
@@ -20,13 +20,15 @@ export class UsersAdminController {
   @Roles(UserRoleEnum.admin)
   @Post("/")
   async users(@Body(DtoValidationPipe) createUserDto: CreateUserDto) {
-    return this.usersFormatter.formatForAdmin(await this.usersService.create(createUserDto));
+    return this.usersFormatter.formatForAdmin(
+      await this.usersService.create(createUserDto),
+    );
   }
 
   @Roles(UserRoleEnum.admin)
   @Get("/")
   async usersList(@Query() query: SearchUserParams) {
     const users = await this.usersService.findAll(query);
-    return users.map(user => this.usersFormatter.formatForAdmin(user));
+    return users.map((user) => this.usersFormatter.formatForAdmin(user));
   }
 }

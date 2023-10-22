@@ -6,6 +6,9 @@ import { MarkMessagesAsRead } from "./mark-messages-as-read.interface";
 
 export interface ISupportRequestClientService {
   createSupportRequest(data: CreateSupportRequest): Promise<SupportRequest>;
-  markMessagesAsRead(request: SupportRequest, params: MarkMessagesAsRead): Promise<void>;
+  markMessagesAsRead(
+    request: SupportRequest,
+    params: MarkMessagesAsRead,
+  ): Promise<void>;
   getUnreadCount(supportRequest: ID): Promise<Message[]>;
 }

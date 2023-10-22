@@ -1,5 +1,5 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { HydratedDocument } from "mongoose";
 import { iUser } from "src/interfaces/user.interface";
 import { ID } from "src/types/ID";
 
@@ -9,19 +9,22 @@ export type UserDocument = HydratedDocument<User>;
 export class User implements iUser {
   id: ID;
 
-  @Prop( { required: [true, 'Не указан email'], unique: [true, 'Пользователь с таким email уже есть'] })
+  @Prop({
+    required: [true, "Не указан email"],
+    unique: [true, "Пользователь с таким email уже есть"],
+  })
   email: string;
 
-  @Prop( { required: [true, 'Не указан пароль'] })
+  @Prop({ required: [true, "Не указан пароль"] })
   passwordHash: string;
 
-  @Prop( { required: [true, 'Не указано имя'] })
+  @Prop({ required: [true, "Не указано имя"] })
   name: string;
 
-  @Prop( { required: false })
+  @Prop({ required: false })
   contactPhone: string;
 
-  @Prop( { required: true, default: 'client' })
+  @Prop({ required: true, default: "client" })
   role: string;
 }
 

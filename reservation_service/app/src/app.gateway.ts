@@ -5,9 +5,9 @@ import {
   SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
-  WsException
-} from '@nestjs/websockets';
-import { Server, Socket } from 'socket.io';
+  WsException,
+} from "@nestjs/websockets";
+import { Server, Socket } from "socket.io";
 import { User } from "src/modules/users/mongo.schemas/user.schema";
 import { UserRoleEnum } from "./enums/user-role.enum";
 import { WsExceptionFilter } from "./filters/ws.exception.filter";
@@ -18,8 +18,8 @@ import { SupportRequestMessageFormatter } from "./modules/support-request/suppor
 import { SupportRequestService } from "./modules/support-request/support-request.service";
 import { ID } from "./types/ID";
 
-@UseFilters(new WsExceptionFilter)
-@WebSocketGateway({ cors: true, credentials: true, })
+@UseFilters(new WsExceptionFilter())
+@WebSocketGateway({ cors: true, credentials: true })
 export class AppGateway {
   constructor(
     private readonly supportRequestService: SupportRequestService,
@@ -31,18 +31,18 @@ export class AppGateway {
 
   @UseGuards(WsAuthenticatedGuard, WsRolesGuard)
   @Roles(UserRoleEnum.manager, UserRoleEnum.client)
-  @SubscribeMessage('subscribeToChat')
+  @SubscribeMessage("subscribeToChat")
   async subscribeToChat(
     @MessageBody("payload") payload: { chatId: ID },
     @ConnectedSocket() client: Socket,
   ) {
     if (!payload?.chatId) {
-      throw new WsException('payload.chatId is empty');
+      throw new WsException("payload.chatId is empty");
     }
     const user: User = (client.request as any)?.user;
     return this.supportRequestService.subscribe((supportRequest, message) => {
       if (this.supportRequestService.canAccessRequest(supportRequest, user)) {
-        client.emit('newMessage', this.supportMessageFormatter.format(message));
+        client.emit("newMessage", this.supportMessageFormatter.format(message));
       }
     });
   }

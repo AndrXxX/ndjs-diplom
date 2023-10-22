@@ -1,8 +1,8 @@
-import { Module } from '@nestjs/common';
+import { Module } from "@nestjs/common";
 import { EventEmitterModule } from "@nestjs/event-emitter";
-import { MongooseModule } from '@nestjs/mongoose';
+import { MongooseModule } from "@nestjs/mongoose";
 import { AppGateway } from "./app.gateway";
-import config from './config';
+import config from "./config";
 import { AuthModule } from "./modules/auth/auth.module";
 import { DownloadModule } from "./modules/download/download.module";
 import { HotelsModule } from "./modules/hotels/hotels.module";
@@ -22,9 +22,7 @@ const modules = [
 ];
 
 @Module({
-  imports: [
-    ...modules,
-  ],
+  imports: [...modules],
   controllers: [],
   providers: [AppGateway],
 })

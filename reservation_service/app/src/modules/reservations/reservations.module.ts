@@ -1,7 +1,10 @@
-import { Module } from '@nestjs/common';
+import { Module } from "@nestjs/common";
 import { MongooseModule } from "@nestjs/mongoose";
 import { HotelsModule } from "../hotels/hotels.module";
-import { Reservation, ReservationSchema } from "./mongo.schemas/reservation.schema";
+import {
+  Reservation,
+  ReservationSchema,
+} from "./mongo.schemas/reservation.schema";
 import { ReservationsClientController } from "./reservations-client.controller";
 import { ReservationsManagerController } from "./reservations-manager.controller";
 import { ReservationsFormatter } from "./reservations.formatter";

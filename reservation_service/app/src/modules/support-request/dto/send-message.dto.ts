@@ -3,7 +3,8 @@ import { ID } from "src/types/ID";
 import { SendMessage } from "../interfaces/send-message.interface";
 
 export class CreateSupportRequestDto implements SendMessage {
-  @IsDefined() @IsString()
+  @IsDefined()
+  @IsString()
   text: string;
 
   authorId: ID;

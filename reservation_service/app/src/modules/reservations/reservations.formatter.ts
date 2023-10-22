@@ -5,20 +5,23 @@ import { Reservation } from "src/modules/reservations/mongo.schemas/reservation.
 
 @Injectable()
 export class ReservationsFormatter {
+  constructor(
+    private hotelsFormatter: HotelsFormatter,
+    private hotelsRoomFormatter: HotelsRoomFormatter,
+  ) {}
 
-    constructor(
-      private hotelsFormatter: HotelsFormatter,
-      private hotelsRoomFormatter: HotelsRoomFormatter,
-    ) {}
-
-    public format(reservation: Reservation) {
-        const { id, dateStart, dateEnd } = reservation;
-        return {
-            id: id,
-            startDate: dateStart,
-            endDate: dateEnd,
-            hotelRoom: reservation.room ? this.hotelsRoomFormatter.formatForClient(reservation.room) : null,
-            hotel: reservation.room?.hotel ? this.hotelsFormatter.formatForClient(reservation.room.hotel) : null,
-        };
-    }
+  public format(reservation: Reservation) {
+    const { id, dateStart, dateEnd } = reservation;
+    return {
+      id: id,
+      startDate: dateStart,
+      endDate: dateEnd,
+      hotelRoom: reservation.room
+        ? this.hotelsRoomFormatter.formatForClient(reservation.room)
+        : null,
+      hotel: reservation.room?.hotel
+        ? this.hotelsFormatter.formatForClient(reservation.room.hotel)
+        : null,
+    };
+  }
 }

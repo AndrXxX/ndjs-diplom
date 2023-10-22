@@ -18,13 +18,18 @@ export class UsersService implements IUserService {
   public async create(
     data: Partial<CreateUserDto> & Partial<User>,
   ): Promise<UserDocument> {
+    const exist = await this.findByEmail(data.email);
+    if (exist) {
+      throw new BadRequestException(
+        `Пользователь с email ${data.email} уже есть`,
+      );
+    }
     data.passwordHash = this.hashService.generate(data.password);
     const user = new this.UserModel(data);
     try {
       await user.save();
       return user;
     } catch (e) {
-      console.error(e);
       throw new BadRequestException(
         "Ошибка при создании пользователя: указаны неверные данные или такой пользователь уже есть",
       );

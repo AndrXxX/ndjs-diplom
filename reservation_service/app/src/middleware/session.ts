@@ -5,4 +5,4 @@ export default session({
   secret: config.cookieSecret,
   resave: false,
   saveUninitialized: false,
-})
+});
